@@ -1,0 +1,42 @@
+[
+    {
+        "in": "ÄBCDEFGHIJ",
+        "out": "ÄBC*******"
+    },
+    {
+        "in": "2XTL-G3G6-H2G6-U52D",
+        "out": "2XTL-****-****-****"
+    },
+    {
+        "in": "ABCD-EFGH-IJKL-MNOP",
+        "out": "ABCD-****-****-****"
+    },
+    {
+        "in": "AB",
+        "out": "**"
+    },
+    {
+        "in": "ABCD",
+        "out": "****"
+    },
+    {
+        "in": "ABCD-",
+        "out": "*****"
+    },
+    {
+        "in": "VENDOR-12345",
+        "out": "VEND**-*****"
+    },
+    {
+        "in": "",
+        "out": ""
+    },
+    {
+        "in": "ABCDEFGHIJKLMNOP",
+        "out": "ABCD************"
+    },
+    {
+        "in": "ÄB-CDEFGHIJ",
+        "out": "ÄB-********"
+    }
+]

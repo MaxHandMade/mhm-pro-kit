@@ -1,0 +1,11 @@
+/vendor/
+/node_modules/
+/build/
+/composer.lock
+/.phpunit.result.cache
+# Plan ledgers and briefs (superpowers): scratch, never part of the package.
+.superpowers/
+# Memory lives in the private sibling mhm-pro-kit-dev (junction + local settings).
+.claude/memory/
+.claude/settings.json
+.claude/settings.local.json

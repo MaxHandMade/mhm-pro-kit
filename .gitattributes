@@ -1,0 +1,21 @@
+# LF everywhere (PHPCS on Windows otherwise fails on CRLF while CI stays green).
+* text=auto eol=lf
+
+# Development-only files stay out of the composer archive: a consumer installs
+# this package into vendor/mhm/pro-kit and its own gates lint what they find
+# there (same list and same reasons as mhm/ui-core's .gitattributes).
+/tests/            export-ignore
+/.github/          export-ignore
+*.test.js          export-ignore
+*.test.jsx         export-ignore
+/jest.config.js    export-ignore
+/.eslintrc.js      export-ignore
+/phpcs.xml         export-ignore
+/phpstan.neon      export-ignore
+/phpunit.xml       export-ignore
+/package-lock.json export-ignore
+/.gitattributes    export-ignore
+/.gitignore        export-ignore
+/CLAUDE.md         export-ignore
+/AGENTS.md         export-ignore
+# package.json stays: webpack reads "sideEffects" from it when a consumer bundles src-react/.
