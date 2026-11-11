@@ -103,14 +103,13 @@ export function Latest( { t, license, product } ) {
 				</strong>{ ' ' }
 				<span>{ t( 'latestText', license.current_version ) }</span>
 			</div>
-			<a
-				className="mhmprokit-lic-btn mhmprokit-lic-btn--primary mhmprokit-lic-btn--link"
+			<LinkButton
 				href={ product.downloadUrl }
-				target="_blank"
-				rel="noopener noreferrer"
+				variant="primary"
+				newTab={ t( 'newTab' ) }
 			>
 				{ t( 'download', license.latest_version ) }
-			</a>
+			</LinkButton>
 		</div>
 	);
 }

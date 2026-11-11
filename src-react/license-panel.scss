@@ -113,11 +113,6 @@
 		padding: 0 12px;
 	}
 
-	&--link:focus,
-	&--link:visited {
-		color: var(--lic-on-primary);
-	}
-
 	// Navigation links wear the look of the secondary "Check now" button (or primary for a card's main action).
 	&--link-outline:focus,
 	&--link-outline:visited {
@@ -140,14 +135,6 @@
 			background: var(--lic-primary-dark);
 		}
 	}
-}
-
-.mhmprokit-lic-textlink {
-	display: inline-flex;
-	align-items: center;
-	min-height: 44px;
-	padding: 0 6px;
-	font-size: 14px;
 }
 
 .mhmprokit-lic-actions {

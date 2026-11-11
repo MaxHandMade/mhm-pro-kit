@@ -203,7 +203,7 @@ test( 'active_with_latest_version_progress_account_and_deactivate', async () => 
 	expect( screen.getByText( 'Slotiva 1.2.0 is out.' ) ).not.toBeNull();
 	expect(
 		screen
-			.getByRole( 'link', { name: 'Download 1.2.0' } )
+			.getByRole( 'link', { name: /^Download 1.2.0/ } )
 			.getAttribute( 'href' )
 	).toBe( 'https://wpalemi.com/download/mhm-slotiva' );
 	expect(
@@ -355,7 +355,7 @@ test( 'new_version_strip_shown_in_grace', () => {
 	} );
 	expect( screen.getByText( 'Slotiva 1.3.0 is out.' ) ).not.toBeNull();
 	expect(
-		screen.getByRole( 'link', { name: 'Download 1.3.0' } )
+		screen.getByRole( 'link', { name: /^Download 1.3.0/ } )
 	).not.toBeNull();
 } );
 
@@ -508,4 +508,13 @@ test( 'grace_bar_never_goes_below_zero', () => {
 	expect(
 		screen.getByRole( 'progressbar' ).getAttribute( 'aria-valuenow' )
 	).toBe( '0' );
+} );
+
+test( 'download_in_the_new_version_strip_is_a_primary_new_tab_button', () => {
+	panel( { ...ACTIVE, latest_version: '1.2.0' } );
+	const link = screen.getByRole( 'link', { name: /^Download 1\.2\.0/ } );
+	expect( link.className ).toContain( 'mhmprokit-lic-btn--link-primary' );
+	expect( link.getAttribute( 'target' ) ).toBe( '_blank' );
+	expect( link.getAttribute( 'rel' ) ).toBe( 'noopener noreferrer' );
+	expect( link.textContent ).toContain( '(opens in a new tab)' );
 } );
