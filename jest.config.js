@@ -16,6 +16,6 @@ module.exports = {
 		// files add one '../' per level). Here ui-core is this repo's own
 		// composer dependency, so the same specifier resolves to vendor/mhm/ui-core.
 		'^(?:\.\./)+ui-core/(.*)$': '<rootDir>/vendor/mhm/ui-core/$1',
-		'\.css$': '<rootDir>/tests/style-stub.js',
+		'\\.s?css$': '<rootDir>/tests/style-stub.js',
 	},
 };
