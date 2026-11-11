@@ -452,3 +452,37 @@ test( 'progress_is_clamped_to_the_period', () => {
 		screen.getByRole( 'progressbar' ).getAttribute( 'aria-valuenow' )
 	).toBe( '0' );
 } );
+
+test( 'gives_icon_may_be_a_node_for_product_specific_icons', () => {
+	const { container } = panel( NONE, {
+		product: {
+			...PRODUCT,
+			gives: [
+				{
+					icon: <svg data-testid="own-icon" aria-hidden="true" />,
+					title: 'Transfer',
+					text: 'Airport transfers.',
+				},
+			],
+		},
+	} );
+	expect(
+		container.querySelector(
+			'.mhmprokit-lic-gives__icon [data-testid="own-icon"]'
+		)
+	).not.toBeNull();
+} );
+
+test( 'account_hint_under_the_account_button_only_when_given', () => {
+	const a = panel( ACTIVE );
+	expect(
+		a.container.querySelector( '.mhmprokit-lic-facts__hint' )
+	).toBeNull();
+	a.unmount();
+	const b = panel( ACTIVE, {
+		text: { ...TEXT, accountHint: 'Payment method, plan, renewal' },
+	} );
+	expect(
+		b.container.querySelector( '.mhmprokit-lic-facts__hint' ).textContent
+	).toBe( 'Payment method, plan, renewal' );
+} );

@@ -17,6 +17,7 @@
 		"@wordpress/date": "^6.1.0",
 		"@wordpress/element": "6.46.0",
 		"@wordpress/scripts": "30.27.0",
+		"react-dom": "18.3.1",
 		"typescript": "^6.0.3"
 	},
 	"peerDependencies": {

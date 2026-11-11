@@ -200,6 +200,10 @@
 	font-weight: 600;
 	padding: 4px 10px;
 	border-radius: 999px;
+	// Neutral by default (Rentiva's "Lite is running" badge); the tone
+	// modifiers below override both.
+	color: var(--lic-muted);
+	background: var(--mhmui-surface-sunken, #f0f0f1);
 
 	&--ok {
 		color: var(--lic-ok);
@@ -390,6 +394,14 @@
 		font-size: 14px;
 		color: var(--lic-muted);
 		line-height: 1.45;
+	}
+
+	// Under the account button (Rentiva: "Payment method, plan, renewal").
+	&__hint {
+		flex-basis: 100%;
+		margin-top: -6px;
+		font-size: 12px;
+		color: var(--lic-muted);
 	}
 }
 

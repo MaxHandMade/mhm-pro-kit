@@ -173,6 +173,11 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 					>
 						{ t( 'accountButton' ) }
 					</LinkButton>
+					{ t( 'accountHint' ) ? (
+						<span className="mhmprokit-lic-facts__hint">
+							{ t( 'accountHint' ) }
+						</span>
+					) : null }
 				</Fact>
 			</dl>
 		</section>

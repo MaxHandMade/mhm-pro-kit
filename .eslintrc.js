@@ -10,6 +10,14 @@ module.exports = {
 	},
 	overrides: [
 		{
+			// Jest reads its per-file environment from a docblock pragma
+			// (@jest-environment node), which the JSDoc rule takes for an
+			// unknown tag. The visual harness needs node: react-dom/server's
+			// browser build wants TextEncoder, which jsdom does not provide.
+			files: [ 'tests/visual/**' ],
+			rules: { 'jsdoc/check-tag-names': 'off' },
+		},
+		{
 			// wp-scripts' default config gives jest globals to **/*.test.js but not to
 			// .test.jsx, so a JSX test file fails on `describe` being undefined.
 			files: [ '**/*.test.js', '**/*.test.jsx' ],

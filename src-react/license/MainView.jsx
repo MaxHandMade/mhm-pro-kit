@@ -61,7 +61,11 @@ export default function MainView( { t, product, form } ) {
 						{ ( product.gives || [] ).map( ( item ) => (
 							<li key={ item.title }>
 								<span className="mhmprokit-lic-gives__icon">
-									<Icon name={ item.icon } size={ 18 } />
+									{ typeof item.icon === 'string' ? (
+										<Icon name={ item.icon } size={ 18 } />
+									) : (
+										item.icon
+									) }
 								</span>
 								<div>
 									<strong>{ item.title }</strong>
