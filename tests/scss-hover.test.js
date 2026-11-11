@@ -35,3 +35,12 @@ test( 'primary link button keeps light text on hover at the base rule specificit
 	expect( rules ).toContain( 'color: var(--lic-on-primary)' );
 	expect( rules ).toContain( 'background: var(--lic-primary-dark)' );
 } );
+
+test( 'the primary hover rule comes after the base hover rule (equal specificity: order decides)', () => {
+	const base = css.indexOf( '.mhmprokit-lic-btn:hover:not(:disabled)' );
+	const fix = css.indexOf(
+		'.mhmprokit-lic-btn--link-primary:hover:not(:disabled)'
+	);
+	expect( base ).toBeGreaterThan( -1 );
+	expect( fix ).toBeGreaterThan( base );
+} );
