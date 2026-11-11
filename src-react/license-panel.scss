@@ -125,13 +125,16 @@
 		color: var(--lic-on-primary);
 		font-weight: 600;
 
-		&:hover,
 		&:focus,
 		&:visited {
 			color: var(--lic-on-primary);
 		}
 
-		&:hover {
+		// Same specificity as the base `.mhmprokit-lic-btn:hover:not(:disabled)`
+		// (0,3,0) and later in the file, so it wins: with a plain `:hover`
+		// (0,2,0) the base rule turned the text dark blue on a dark blue fill.
+		&:hover:not(:disabled) {
+			color: var(--lic-on-primary);
 			background: var(--lic-primary-dark);
 		}
 	}

@@ -13,8 +13,9 @@ module.exports = {
 			// Jest reads its per-file environment from a docblock pragma
 			// (@jest-environment node), which the JSDoc rule takes for an
 			// unknown tag. The visual harness needs node: react-dom/server's
-			// browser build wants TextEncoder, which jsdom does not provide.
-			files: [ 'tests/visual/**' ],
+			// browser build wants TextEncoder, which jsdom does not provide; the
+			// hover test compiles SCSS with sass, also a node job.
+			files: [ 'tests/visual/**', 'tests/scss-hover.test.js' ],
 			rules: { 'jsdoc/check-tag-names': 'off' },
 		},
 		{
