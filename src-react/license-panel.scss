@@ -1,0 +1,910 @@
+/**
+ * License screen (1.0.2 redesign, artboards license/*). Every colour is a ui-core token with the design hex as
+ * fallback. Width-dependent `display` (grid vs flex) lives ONLY inside the disjoint max-width:782px /
+ * min-width:783px queries at the bottom; touch targets >= 44px.
+ */
+.mhmprokit-license {
+	--lic-surface: var(--mhmui-surface, #ffffff);
+	--lic-border: var(--mhmui-border-divider, #dcdcde);
+	--lic-line: var(--mhmui-border-light, #f0f0f1);
+	--lic-panel: var(--mhmui-neutral-soft, #f6f7f7);
+	--lic-text: var(--mhmui-text, #1d2327);
+	--lic-muted: var(--mhmui-text-secondary, #50575e);
+	--lic-faint: var(--mhmui-text-muted, #646970);
+	--lic-field: var(--mhmui-border-strong, #8c8f94);
+	--lic-primary: var(--mhmui-accent, #2271b1);
+	--lic-primary-dark: var(--mhmui-accent-strong, #135e96);
+	--lic-on-primary: var(--mhmui-on-accent, #ffffff);
+	--lic-primary-soft: var(--mhmui-info-soft, #e5f0fa);
+	--lic-ok: var(--mhmui-success-strong, #007a1f);
+	--lic-ok-fill: var(--mhmui-success, #00a32a);
+	--lic-ok-soft: var(--mhmui-success-soft, #dcf7dc);
+	--lic-warn: var(--mhmui-warning-ink, #8a6100);
+	--lic-warn-fill: var(--mhmui-warning, #dba617);
+	--lic-warn-soft: var(--mhmui-warning-soft, #fff3cd);
+	--lic-bad: var(--mhmui-danger-ink, #b32d2e);
+	--lic-bad-soft: var(--mhmui-danger-soft, #fbe0e0);
+
+	// Pale halos and tints derived from the soft tokens (no kit token for them).
+	--lic-ok-halo: color-mix(in srgb, var(--lic-ok-soft) 35%, var(--lic-surface));
+	--lic-warn-halo: color-mix(in srgb, var(--lic-warn-soft) 35%, var(--lic-surface));
+	--lic-bad-halo: color-mix(in srgb, var(--lic-bad-soft) 35%, var(--lic-surface));
+	--lic-info-edge: color-mix(in srgb, var(--lic-primary) 15%, var(--lic-primary-soft));
+
+	max-width: 1040px;
+	color: var(--lic-text);
+
+	h2 {
+		margin: 0;
+		color: var(--lic-text);
+	}
+
+	p {
+		margin: 0;
+	}
+}
+
+.mhmprokit-lic-stack,
+.mhmprokit-lic-side,
+.mhmprokit-lic-pair {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.mhmprokit-lic-card {
+	background: var(--lic-surface);
+	border: 1px solid var(--lic-border);
+	border-radius: 12px;
+	box-shadow: var(--mhmui-shadow-1, 0 1px 2px rgba(0, 0, 0, 0.06));
+	box-sizing: border-box;
+}
+
+// ---- buttons ---------------------------------------------------------------------------------------------------
+.mhmprokit-lic-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 44px;
+	padding: 0 18px;
+	border: 1px solid var(--mhmui-border, #c3c4c7);
+	border-radius: 6px;
+	background: var(--lic-surface);
+	color: var(--lic-primary);
+	font: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	box-sizing: border-box;
+
+	&:hover:not(:disabled) {
+		color: var(--lic-primary-dark);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--lic-primary);
+		outline-offset: 2px;
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: default;
+	}
+
+	&--primary {
+		background: var(--lic-primary);
+		border-color: var(--lic-primary);
+		color: var(--lic-on-primary);
+
+		&:hover:not(:disabled) {
+			background: var(--lic-primary-dark);
+			color: var(--lic-on-primary);
+		}
+	}
+
+	&--outline {
+		border-color: var(--lic-primary);
+	}
+
+	&--small {
+		font-weight: 400;
+		padding: 0 12px;
+	}
+
+	&--link:focus,
+	&--link:visited {
+		color: var(--lic-on-primary);
+	}
+
+	// Navigation links wear the look of the secondary "Check now" button (or primary for a card's main action).
+	&--link-outline:focus,
+	&--link-outline:visited {
+		color: var(--lic-primary);
+	}
+
+	&--link-primary {
+		background: var(--lic-primary);
+		border-color: var(--lic-primary);
+		color: var(--lic-on-primary);
+		font-weight: 600;
+
+		&:hover,
+		&:focus,
+		&:visited {
+			color: var(--lic-on-primary);
+		}
+
+		&:hover {
+			background: var(--lic-primary-dark);
+		}
+	}
+}
+
+.mhmprokit-lic-textlink {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 6px;
+	font-size: 14px;
+}
+
+.mhmprokit-lic-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: center;
+	margin-top: 14px;
+}
+
+// ---- badges and pills ------------------------------------------------------------------------------------------
+.mhmprokit-lic-badge {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+
+	&--ok {
+		background: var(--lic-ok-soft);
+		color: var(--lic-ok);
+		box-shadow: 0 0 0 6px var(--lic-ok-halo);
+	}
+
+	&--warn {
+		background: var(--lic-warn-soft);
+		color: var(--lic-warn);
+		box-shadow: 0 0 0 6px var(--lic-warn-halo);
+	}
+
+	&--bad {
+		background: var(--lic-bad-soft);
+		color: var(--lic-bad);
+		box-shadow: 0 0 0 6px var(--lic-bad-halo);
+	}
+
+	&--info {
+		background: var(--lic-primary-soft);
+		color: var(--lic-primary-dark);
+		width: 56px;
+		height: 56px;
+		box-shadow: none;
+	}
+}
+
+.mhmprokit-lic-pill {
+	font-size: 12px;
+	font-weight: 600;
+	padding: 4px 10px;
+	border-radius: 999px;
+	// Neutral by default (Rentiva's "Lite is running" badge); the tone
+	// modifiers below override both.
+	color: var(--lic-muted);
+	background: var(--mhmui-surface-sunken, #f0f0f1);
+
+	&--ok {
+		color: var(--lic-ok);
+		background: var(--lic-ok-soft);
+	}
+
+	&--warn {
+		color: var(--lic-warn);
+		background: var(--lic-warn-soft);
+	}
+
+	&--bad {
+		color: var(--lic-bad);
+		background: var(--lic-bad-soft);
+	}
+}
+
+// ---- status card -----------------------------------------------------------------------------------------------
+.mhmprokit-lic-status {
+	overflow: hidden;
+
+	h2 {
+		font-size: 24px;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+
+	p {
+		margin-top: 6px;
+		font-size: 14px;
+		color: var(--lic-muted);
+		line-height: 1.5;
+	}
+
+	&__main {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		padding: 28px 32px;
+	}
+
+	&__titlerow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
+.mhmprokit-lic-remaining {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 6px;
+	padding: 24px 28px;
+	background: var(--lic-panel);
+	border-left: 1px solid var(--lic-line);
+
+	&__label,
+	&__caption {
+		font-size: 13px;
+		color: var(--lic-muted);
+	}
+
+	&__value {
+		font-size: 16px;
+		font-weight: 500;
+		color: var(--lic-muted);
+		font-variant-numeric: tabular-nums;
+
+		span {
+			font-size: 34px;
+			font-weight: 600;
+			letter-spacing: -0.02em;
+			color: var(--lic-text);
+		}
+
+		small {
+			font-size: inherit;
+		}
+	}
+}
+
+.mhmprokit-lic-bar {
+	height: 6px;
+	background: var(--lic-border);
+	border-radius: 999px;
+	overflow: hidden;
+
+	&--thick {
+		height: 8px;
+		background: var(--lic-line);
+	}
+
+	&__fill {
+		height: 100%;
+
+		&--ok {
+			background: var(--lic-ok-fill);
+		}
+
+		&--warn {
+			background: var(--lic-warn-fill);
+		}
+	}
+}
+
+.mhmprokit-lic-status--warn .mhmprokit-lic-remaining {
+	background: var(--lic-warn-halo);
+}
+
+// "On this site" chips (Rentiva's Lisans-Etkin board): what the license turns
+// on here. Optional; drawn only when product.features is given.
+.mhmprokit-lic-features {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	padding: 16px 32px;
+	border-top: 1px solid var(--lic-line);
+
+	&__label {
+		margin-right: 6px;
+		font-size: 12px;
+		color: var(--mhmui-text-muted, #646970);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	ul {
+		display: contents;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin: 0;
+		padding: 4px 10px;
+		border-radius: 999px;
+		background: var(--mhmui-info-soft, #e5f0fa);
+		color: var(--mhmui-info-strong, #135e96);
+		font-size: 13px;
+	}
+}
+
+.mhmprokit-lic-facts {
+	margin: 0;
+	border-top: 1px solid var(--lic-line);
+
+	&__item {
+		padding: 18px 28px;
+		border-right: 1px solid var(--lic-line);
+		font-size: 15px;
+
+		&:last-child {
+			border-right: 0;
+		}
+	}
+
+	dt {
+		font-size: 12px;
+		color: var(--lic-faint);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	dd {
+		margin: 6px 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+		min-height: 44px;
+	}
+
+	code {
+		background: none;
+		padding: 0;
+		font-size: 15px;
+		letter-spacing: 0.06em;
+	}
+
+	&__note {
+		font-size: 14px;
+		color: var(--lic-muted);
+		line-height: 1.45;
+	}
+
+	// Under the account button (Rentiva: "Payment method, plan, renewal").
+	&__hint {
+		flex-basis: 100%;
+		margin-top: -6px;
+		font-size: 12px;
+		color: var(--lic-muted);
+	}
+}
+
+.mhmprokit-lic-latest {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	padding: 14px 18px;
+	background: var(--lic-primary-soft);
+	border: 1px solid var(--lic-info-edge);
+	border-radius: 10px;
+	color: var(--lic-primary-dark);
+	font-size: 14px;
+
+	&__text {
+		flex: 1;
+		color: var(--lic-text);
+
+		span {
+			color: var(--lic-muted);
+		}
+	}
+}
+
+.mhmprokit-lic-move {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+	padding: 20px 32px;
+
+	> div:first-child {
+		flex: 1;
+	}
+
+	h2 {
+		font-size: 15px;
+		font-weight: 600;
+	}
+
+	p {
+		margin-top: 4px;
+		font-size: 13px;
+		color: var(--lic-faint);
+		line-height: 1.5;
+	}
+}
+
+// ---- expired ---------------------------------------------------------------------------------------------------
+.mhmprokit-lic-expired {
+	&__top {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		padding: 28px 32px 0;
+	}
+
+	&__text {
+		flex: 1;
+	}
+
+	&__actions {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		flex: none;
+	}
+}
+
+.mhmprokit-lic-split {
+	gap: 12px;
+	padding: 20px 32px 28px;
+
+	&__item {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+		padding: 16px;
+		background: var(--lic-panel);
+		border-radius: 10px;
+		color: var(--lic-muted);
+		font-size: 13px;
+		line-height: 1.5;
+
+		strong {
+			display: block;
+			margin-bottom: 4px;
+			font-size: 14px;
+			color: var(--lic-text);
+		}
+
+		&--ok {
+			background: var(--lic-ok-soft);
+			color: var(--lic-text);
+		}
+
+		svg {
+			flex: none;
+			margin-top: 1px;
+		}
+	}
+}
+
+.mhmprokit-lic-other {
+	padding: 20px 32px;
+
+	h2 {
+		font-size: 15px;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+}
+
+// ---- key form --------------------------------------------------------------------------------------------------
+.mhmprokit-lic-form {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	&__label {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	&__row {
+		display: flex;
+		gap: 10px;
+	}
+
+	input[type="text"] {
+		flex: 1;
+		min-width: 0;
+		max-width: 420px;
+		min-height: 48px;
+		padding: 0 14px;
+		border: 1px solid var(--lic-field);
+		border-radius: 8px;
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-size: 17px;
+		letter-spacing: 0.08em;
+	}
+
+	&--hero input[type="text"] {
+		max-width: none;
+	}
+
+	&--compact &__label {
+		font-size: 13px;
+		font-weight: 400;
+		color: var(--lic-muted);
+	}
+
+	// Input on the left, the button at the far right of the card.
+	&--compact &__row {
+		justify-content: space-between;
+	}
+
+	&--compact input[type="text"] {
+		min-height: 44px;
+		font-size: 16px;
+	}
+
+	&--hero .mhmprokit-lic-btn {
+		min-height: 48px;
+		padding: 0 22px;
+		font-size: 15px;
+	}
+
+	&__help {
+		font-size: 13px;
+		color: var(--lic-faint);
+		line-height: 1.5;
+	}
+}
+
+// ---- main (no license) -----------------------------------------------------------------------------------------
+.mhmprokit-lic-hero {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	padding: 32px;
+
+	&__head {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+
+		h2 {
+			font-size: 22px;
+			font-weight: 600;
+			letter-spacing: -0.01em;
+		}
+
+		p {
+			margin-top: 4px;
+			font-size: 14px;
+			color: var(--lic-muted);
+		}
+	}
+
+	&__icon {
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 14px;
+		background: var(--lic-primary-soft);
+		color: var(--lic-primary-dark);
+	}
+}
+
+.mhmprokit-lic-buy {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 16px;
+	background: var(--lic-panel);
+	border-radius: 10px;
+	font-size: 14px;
+	color: var(--lic-muted);
+
+	svg {
+		flex: none;
+	}
+
+	&__text {
+		flex: 1;
+	}
+
+	a {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		font-weight: 600;
+	}
+}
+
+.mhmprokit-lic-gives {
+	padding: 22px;
+
+	h2 {
+		margin-bottom: 14px;
+		font-size: 15px;
+		font-weight: 600;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	li {
+		display: flex;
+		gap: 12px;
+		margin: 0;
+
+		strong {
+			display: block;
+			font-size: 14px;
+		}
+
+		div span {
+			display: block;
+			margin-top: 2px;
+			font-size: 13px;
+			color: var(--lic-faint);
+			line-height: 1.45;
+		}
+	}
+
+	&__icon {
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 8px;
+		background: var(--lic-primary-soft);
+		color: var(--lic-primary-dark);
+	}
+}
+
+.mhmprokit-lic-free {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	padding: 14px 16px;
+	background: var(--lic-ok-soft);
+	border-radius: 10px;
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--lic-text);
+
+	svg {
+		flex: none;
+		margin-top: 1px;
+		color: var(--lic-ok);
+	}
+
+	// Bold lead sentence, then normal text.
+	strong {
+		font-weight: 700;
+	}
+}
+
+// ---- help cards (unverified / offline) -------------------------------------------------------------------------
+.mhmprokit-lic-help {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 26px 28px;
+
+	&__head {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+
+		h2 {
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 1.3;
+		}
+	}
+
+	p {
+		font-size: 14px;
+		color: var(--lic-muted);
+		line-height: 1.55;
+
+		strong {
+			color: var(--lic-text);
+		}
+	}
+
+	ol {
+		margin: 0;
+		padding-left: 20px;
+		font-size: 14px;
+		line-height: 1.7;
+	}
+
+	.mhmprokit-lic-actions {
+		margin-top: 0;
+	}
+
+	&__meta {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 8px;
+		font-size: 13px;
+		color: var(--lic-muted);
+	}
+}
+
+.mhmprokit-lic-eyebrow {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--lic-faint);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+// ---- layout by width (disjoint queries: the only place width-dependent `display` is set) -----------------------
+@media (min-width: 783px) {
+	.mhmprokit-lic-main {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 380px;
+		gap: 24px;
+		align-items: start;
+	}
+
+	.mhmprokit-lic-status__top {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 300px;
+	}
+
+	.mhmprokit-lic-facts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.mhmprokit-lic-split {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.mhmprokit-lic-remaining__head {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.mhmprokit-lic-pair {
+		max-width: 520px;
+	}
+
+	.mhmprokit-lic-move__long {
+		display: block;
+	}
+
+	.mhmprokit-lic-move__short {
+		display: none;
+	}
+}
+
+@media (max-width: 782px) {
+	.mhmprokit-lic-main {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.mhmprokit-lic-status__top {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mhmprokit-lic-status__main {
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 20px;
+	}
+
+	.mhmprokit-lic-remaining {
+		border-left: 0;
+		border-top: 1px solid var(--lic-line);
+		padding: 16px 20px;
+	}
+
+	// "Time left" on the left, the days number on the right of the same row; the bar sits below.
+	.mhmprokit-lic-remaining__head {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+
+	.mhmprokit-lic-remaining__value span {
+		font-size: 26px;
+	}
+
+	.mhmprokit-lic-facts {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.mhmprokit-lic-facts__item {
+		padding: 14px 20px;
+		border-right: 0;
+		border-bottom: 1px solid var(--lic-line);
+	}
+
+	.mhmprokit-lic-split {
+		display: flex;
+		flex-direction: column;
+		padding: 16px 20px 20px;
+	}
+
+	.mhmprokit-lic-latest,
+	.mhmprokit-lic-move,
+	.mhmprokit-lic-expired__top {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.mhmprokit-lic-expired__top {
+		padding: 20px 20px 0;
+	}
+
+	.mhmprokit-lic-move,
+	.mhmprokit-lic-other {
+		padding: 18px 20px;
+	}
+
+	.mhmprokit-lic-move__long {
+		display: none;
+	}
+
+	.mhmprokit-lic-move__short {
+		display: block;
+	}
+
+	.mhmprokit-lic-hero {
+		padding: 20px;
+	}
+
+	.mhmprokit-lic-form__row {
+		flex-direction: column;
+	}
+
+	.mhmprokit-lic-form input[type="text"] {
+		max-width: none;
+	}
+
+	.mhmprokit-lic-buy {
+		flex-wrap: wrap;
+	}
+}
