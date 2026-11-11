@@ -5,7 +5,8 @@
 	"description": "Shared Pro-only admin UI for MHM plugins (license page).",
 	"license": "GPL-2.0-or-later",
 	"sideEffects": [
-		"*.css"
+		"*.css",
+		"*.scss"
 	],
 	"scripts": {
 		"test": "wp-scripts test-unit-js",
@@ -21,6 +22,7 @@
 		"typescript": "^6.0.3"
 	},
 	"peerDependencies": {
-		"@wordpress/element": ">=6"
+		"@wordpress/element": ">=6",
+		"@wordpress/date": ">=5"
 	}
 }

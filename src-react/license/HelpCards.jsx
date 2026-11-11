@@ -54,7 +54,7 @@ export function UnverifiedCard( { t, product, busy, onCheck } ) {
 
 export function OfflineCard( { t, format, license, busy, onCheck } ) {
 	const left = format.daysUntil( license.grace_until );
-	const days = Math.min( left || 0, GRACE_DAYS );
+	const days = Math.max( 0, Math.min( left || 0, GRACE_DAYS ) );
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-help"

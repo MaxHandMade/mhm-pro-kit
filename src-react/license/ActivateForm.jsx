@@ -15,8 +15,8 @@ export default function ActivateForm( {
 	t,
 	variant = 'hero',
 	value,
-	onChange,
-	onSubmit,
+	onChange = () => {},
+	onSubmit = ( event ) => event.preventDefault(),
 	busy,
 } ) {
 	const hero = variant === 'hero';

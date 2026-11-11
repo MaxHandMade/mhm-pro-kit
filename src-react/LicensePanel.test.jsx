@@ -486,3 +486,26 @@ test( 'account_hint_under_the_account_button_only_when_given', () => {
 		b.container.querySelector( '.mhmprokit-lic-facts__hint' ).textContent
 	).toBe( 'Payment method, plan, renewal' );
 } );
+
+test( 'typing_without_a_form_prop_does_not_throw', () => {
+	render(
+		<LicensePanel license={ NONE } product={ PRODUCT } text={ TEXT } />
+	);
+	expect( () =>
+		fireEvent.change( screen.getByLabelText( 'License key' ), {
+			target: { value: 'X' },
+		} )
+	).not.toThrow();
+} );
+
+test( 'grace_bar_never_goes_below_zero', () => {
+	panel(
+		{ ...ACTIVE, state: 'grace', grace_until: '2026-11-20T00:00:00Z' },
+		{
+			format: { ...FORMAT, daysUntil: () => -2 },
+		}
+	);
+	expect(
+		screen.getByRole( 'progressbar' ).getAttribute( 'aria-valuenow' )
+	).toBe( '0' );
+} );
