@@ -28,7 +28,7 @@ The package lands in `vendor/mhm/pro-kit`, next to `vendor/mhm/ui-core`.
 ## License key mask (PHP)
 
 ```php
-$masked = mhmprokit_mask_license_key( $key ); // 'A7K2-9QXP-4LMN-RT8W' → 'A7K2-****-****-****'
+$masked = mhmprokit_mask_license_key( $key ); // 'ABCD-EFGH-JKLM-NPQR' → 'ABCD-****-****-****'
 ```
 
 Byte for byte the license server's rule (`KeyMasking::mask()`): at most the first 4
