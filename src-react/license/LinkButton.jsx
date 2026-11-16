@@ -3,6 +3,7 @@
  * action on the license screen looks like the secondary "Check now" button; the
  * main action of a card may be `primary`). Stays a real link; it opens in a new
  * tab, so it carries the external-link icon and screen-reader text. No arrows.
+ * No `href` (the consumer left the URL empty) draws nothing: never a dead link.
  */
 import Icon from './Icon';
 
@@ -12,6 +13,9 @@ export default function LinkButton( {
 	newTab,
 	children,
 } ) {
+	if ( ! href ) {
+		return null;
+	}
 	return (
 		<a
 			className={ `mhmprokit-lic-btn mhmprokit-lic-btn--small mhmprokit-lic-btn--link-${ variant }` }

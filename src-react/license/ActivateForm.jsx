@@ -11,6 +11,8 @@
  * @param {Function} props.onSubmit  Form submit handler.
  * @param {boolean}  props.busy      A request is running.
  */
+import { useId } from '@wordpress/element';
+
 export default function ActivateForm( {
 	t,
 	variant = 'hero',
@@ -20,7 +22,7 @@ export default function ActivateForm( {
 	busy,
 } ) {
 	const hero = variant === 'hero';
-	const id = `mhmprokit-license-key-${ variant }`;
+	const id = useId();
 	const help = hero ? t( 'keyHelp' ) : '';
 	return (
 		<form

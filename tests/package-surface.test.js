@@ -33,6 +33,38 @@ function sideEffectGlobsCover( globs, file ) {
 	);
 }
 
+function importedStyles( source ) {
+	// import 'x.css' · import s from "x.css" · require( 'x.less' ) · const s = require(…)
+	// for .css/.scss/.sass/.less; a commented-out line does not count.
+	const pattern =
+		/^\s*(?:import\s+(?:[^'";]+\s+from\s+)?|(?:(?:const|let|var)\s+\w+\s*=\s*)?require\(\s*)['"]([^'"]+\.(?:css|s[ac]ss|less))['"]/gm;
+	return [ ...source.matchAll( pattern ) ].map( ( m ) => m[ 1 ] );
+}
+
+test( 'the stylesheet finder sees every way a stylesheet is pulled in (0.2.0)', () => {
+	// 0.1 saw only `import '….(s)css';`; any other spelling slipped past the gate.
+	const source = [
+		"import './a.scss';",
+		'import "./b.css";',
+		"import './c.sass'",
+		"import styles from './d.module.css';",
+		"require( './e.less' );",
+		"const f = require('./f.scss');",
+		"import Icon from './Icon';",
+		"// import './commented.css';",
+	].join( '\n' );
+	expect( importedStyles( source ).sort() ).toEqual(
+		[
+			'./a.scss',
+			'./b.css',
+			'./c.sass',
+			'./d.module.css',
+			'./e.less',
+			'./f.scss',
+		].sort()
+	);
+} );
+
 test( 'the sideEffects check itself: *.css does not cover a .scss import', () => {
 	expect( sideEffectGlobsCover( [ '*.css' ], 'license-panel.scss' ) ).toBe(
 		false
@@ -48,13 +80,7 @@ test( 'every stylesheet src-react imports is listed in sideEffects', () => {
 	).sideEffects;
 	const imported = sourceFiles( join( ROOT, 'src-react' ) )
 		.filter( ( f ) => /\.jsx?$/.test( f ) && ! /\.test\.jsx?$/.test( f ) )
-		.flatMap( ( f ) =>
-			[
-				...readFileSync( f, 'utf8' ).matchAll(
-					/^import\s+'([^']+\.s?css)';/gm
-				),
-			].map( ( m ) => m[ 1 ] )
-		);
+		.flatMap( ( f ) => importedStyles( readFileSync( f, 'utf8' ) ) );
 	expect( imported.length ).toBeGreaterThan( 0 );
 	for ( const file of imported ) {
 		expect( [ file, sideEffectGlobsCover( globs, file ) ] ).toEqual( [

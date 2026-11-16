@@ -4,6 +4,8 @@
  * product links from `product`. `product.features` (optional, Rentiva) draws
  * the "on this site" chips on the active and expiring cards.
  */
+import { useId } from '@wordpress/element';
+
 import ActivateForm from './ActivateForm';
 import CheckButton from './CheckButton';
 import Icon from './Icon';
@@ -115,10 +117,11 @@ export function Latest( { t, license, product } ) {
 }
 
 function ActiveCard( { t, format, license, product, busy, onCheck } ) {
+	const titleId = useId();
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--ok"
-			aria-labelledby="mhmprokit-lic-title"
+			aria-labelledby={ titleId }
 		>
 			<div className="mhmprokit-lic-status__top">
 				<div className="mhmprokit-lic-status__main">
@@ -127,9 +130,7 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 					</span>
 					<div>
 						<div className="mhmprokit-lic-status__titlerow">
-							<h2 id="mhmprokit-lic-title">
-								{ t( 'activeTitle' ) }
-							</h2>
+							<h2 id={ titleId }>{ t( 'activeTitle' ) }</h2>
 							<span className="mhmprokit-lic-pill mhmprokit-lic-pill--ok">
 								{ t( 'activePill' ) }
 							</span>
@@ -165,30 +166,33 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 						small
 					/>
 				</Fact>
-				<Fact label={ t( 'accountFact' ) }>
-					<LinkButton
-						href={ product.accountUrl }
-						newTab={ t( 'newTab' ) }
-					>
-						{ t( 'accountButton' ) }
-					</LinkButton>
-					{ t( 'accountHint' ) ? (
-						<span className="mhmprokit-lic-facts__hint">
-							{ t( 'accountHint' ) }
-						</span>
-					) : null }
-				</Fact>
+				{ product.accountUrl ? (
+					<Fact label={ t( 'accountFact' ) }>
+						<LinkButton
+							href={ product.accountUrl }
+							newTab={ t( 'newTab' ) }
+						>
+							{ t( 'accountButton' ) }
+						</LinkButton>
+						{ t( 'accountHint' ) ? (
+							<span className="mhmprokit-lic-facts__hint">
+								{ t( 'accountHint' ) }
+							</span>
+						) : null }
+					</Fact>
+				) : null }
 			</dl>
 		</section>
 	);
 }
 
 function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
+	const titleId = useId();
 	const days = license.days_left || 0;
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--warn"
-			aria-labelledby="mhmprokit-lic-title"
+			aria-labelledby={ titleId }
 		>
 			<div className="mhmprokit-lic-status__top">
 				<div className="mhmprokit-lic-status__main">
@@ -197,7 +201,7 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 					</span>
 					<div>
 						<div className="mhmprokit-lic-status__titlerow">
-							<h2 id="mhmprokit-lic-title">
+							<h2 id={ titleId }>
 								{ t( 'expiringTitle', days ) }
 							</h2>
 							<span className="mhmprokit-lic-pill mhmprokit-lic-pill--warn">
@@ -264,12 +268,14 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 }
 
 function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
+	const titleId = useId();
+	const otherId = useId();
 	const ended = license.reason === 'expired';
 	return (
 		<>
 			<section
 				className="mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--bad"
-				aria-labelledby="mhmprokit-lic-title"
+				aria-labelledby={ titleId }
 			>
 				<div className="mhmprokit-lic-expired__top">
 					<span className="mhmprokit-lic-badge mhmprokit-lic-badge--bad">
@@ -277,7 +283,7 @@ function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
 					</span>
 					<div className="mhmprokit-lic-expired__text">
 						<div className="mhmprokit-lic-status__titlerow">
-							<h2 id="mhmprokit-lic-title">
+							<h2 id={ titleId }>
 								{ ended
 									? t( 'expiredTitle' )
 									: t( 'notActiveTitle' ) }
@@ -330,9 +336,9 @@ function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
 			</section>
 			<section
 				className="mhmprokit-lic-card mhmprokit-lic-other"
-				aria-labelledby="mhmprokit-lic-other-title"
+				aria-labelledby={ otherId }
 			>
-				<h2 id="mhmprokit-lic-other-title">{ t( 'otherKeyTitle' ) }</h2>
+				<h2 id={ otherId }>{ t( 'otherKeyTitle' ) }</h2>
 				<ActivateForm t={ t } variant="compact" { ...form } />
 			</section>
 		</>

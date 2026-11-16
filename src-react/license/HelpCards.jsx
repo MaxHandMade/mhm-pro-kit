@@ -2,6 +2,8 @@
  * Two help cards: "could not verify" (reason unverified) and "offline grace"
  * (grace state, or expired with reason offline).
  */
+import { useId } from '@wordpress/element';
+
 import CheckButton from './CheckButton';
 import Icon from './Icon';
 import LinkButton from './LinkButton';
@@ -9,11 +11,12 @@ import LinkButton from './LinkButton';
 export const GRACE_DAYS = 7;
 
 export function UnverifiedCard( { t, product, busy, onCheck } ) {
+	const titleId = useId();
 	const steps = t( 'unverifiedSteps' );
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-help"
-			aria-labelledby="mhmprokit-lic-u-title"
+			aria-labelledby={ titleId }
 		>
 			<div className="mhmprokit-lic-eyebrow">
 				{ t( 'unverifiedEyebrow' ) }
@@ -22,7 +25,7 @@ export function UnverifiedCard( { t, product, busy, onCheck } ) {
 				<span className="mhmprokit-lic-badge mhmprokit-lic-badge--info">
 					<Icon name="shieldAlert" size={ 28 } />
 				</span>
-				<h2 id="mhmprokit-lic-u-title">{ t( 'unverifiedTitle' ) }</h2>
+				<h2 id={ titleId }>{ t( 'unverifiedTitle' ) }</h2>
 			</div>
 			<p>{ t( 'unverifiedText' ) }</p>
 			{ Array.isArray( steps ) && steps.length ? (
@@ -53,12 +56,13 @@ export function UnverifiedCard( { t, product, busy, onCheck } ) {
 }
 
 export function OfflineCard( { t, format, license, busy, onCheck } ) {
+	const titleId = useId();
 	const left = format.daysUntil( license.grace_until );
 	const days = Math.max( 0, Math.min( left || 0, GRACE_DAYS ) );
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-help"
-			aria-labelledby="mhmprokit-lic-o-title"
+			aria-labelledby={ titleId }
 		>
 			<div className="mhmprokit-lic-eyebrow">
 				{ t( 'offlineEyebrow' ) }
@@ -67,7 +71,7 @@ export function OfflineCard( { t, format, license, busy, onCheck } ) {
 				<span className="mhmprokit-lic-badge mhmprokit-lic-badge--warn">
 					<Icon name="offline" size={ 28 } />
 				</span>
-				<h2 id="mhmprokit-lic-o-title">{ t( 'offlineTitle' ) }</h2>
+				<h2 id={ titleId }>{ t( 'offlineTitle' ) }</h2>
 			</div>
 			<p>
 				{ left === null
