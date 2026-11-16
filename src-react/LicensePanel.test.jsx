@@ -558,16 +558,20 @@ test.each( VIEWS )(
 			'[aria-labelledby], [aria-describedby], label[for]'
 		);
 		expect( refs.length ).toBeGreaterThan( 0 );
-		for ( const el of refs ) {
-			const wanted =
-				el.getAttribute( 'aria-labelledby' ) ||
-				el.getAttribute( 'aria-describedby' ) ||
-				el.getAttribute( 'for' );
-			const own = el.closest( '[data-panel]' );
-			expect( [
-				wanted,
-				own.querySelector( `[id="${ wanted }"]` ),
-			] ).not.toEqual( [ wanted, null ] );
+		// Every attribute on every element, and every id in a space-separated
+		// list, must resolve inside the element's own panel.
+		const wanted = Array.from( refs ).flatMap( ( el ) =>
+			[ 'aria-labelledby', 'aria-describedby', 'for' ]
+				.map( ( attr ) => el.getAttribute( attr ) )
+				.filter( Boolean )
+				.flatMap( ( list ) => list.trim().split( /\s+/ ) )
+				.map( ( id ) => [ el.closest( '[data-panel]' ), id ] )
+		);
+		expect( wanted.length ).toBeGreaterThanOrEqual( refs.length );
+		for ( const [ own, id ] of wanted ) {
+			expect( [ id, own.querySelector( `[id="${ id }"]` ) ] ).not.toEqual(
+				[ id, null ]
+			);
 		}
 	}
 );
