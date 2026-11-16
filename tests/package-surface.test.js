@@ -33,6 +33,72 @@ function sideEffectGlobsCover( globs, file ) {
 	);
 }
 
+function importedStyles( source ) {
+	// Any `import '…'`, `import(…)`, `… from '…'` or `require(…)` naming a
+	// .css/.scss/.sass/.less (any quote, optional ?query), anywhere on a line.
+	// Comments are dropped first; a `//` right after ":" (a URL) is kept.
+	const code = source
+		.replace( /\/\*[\s\S]*?\*\//g, '' )
+		.replace( /(^|[^:])\/\/.*$/gm, '$1' );
+	const pattern =
+		/(?:\bimport\s*\(?|\bfrom|\brequire\s*\()\s*(['"`])([^'"`?]+\.(?:css|s[ac]ss|less))(?:\?[^'"`]*)?\1/g;
+	return [ ...code.matchAll( pattern ) ].map( ( m ) => m[ 2 ] );
+}
+
+test( 'the stylesheet finder sees every way a stylesheet is pulled in (0.2.0)', () => {
+	// 0.1 saw only `import '….(s)css';`; any other spelling slipped past the gate.
+	const source = [
+		"import './a.scss';",
+		'import "./b.css";',
+		"import './c.sass'",
+		"import styles from './d.module.css';",
+		"require( './e.less' );",
+		"const f = require('./f.scss');",
+		"import Icon from './Icon';",
+		"// import './commented.css';",
+	].join( '\n' );
+	expect( importedStyles( source ).sort() ).toEqual(
+		[
+			'./a.scss',
+			'./b.css',
+			'./c.sass',
+			'./d.module.css',
+			'./e.less',
+			'./f.scss',
+		].sort()
+	);
+} );
+
+test( 'the stylesheet finder sees the spellings Fable found missing (0.2.0)', () => {
+	const source = [
+		"const lazy = import( './g.scss' );",
+		"await import('./h.css');",
+		"if ( x ) { require( './i.css' ); }",
+		"const { a } = require( './j.scss' );",
+		"export * from './k.scss';",
+		"import a from './a'; import './l.scss';",
+		"import './m.scss?inline';",
+		'require( `./n.css` );',
+		"/* import './block-comment.css'; */",
+		'/*',
+		" import './multi-line-comment.css';",
+		' */',
+		"const url = 'https://example.com/x'; // import './trailing.css';",
+	].join( '\n' );
+	expect( importedStyles( source ).sort() ).toEqual(
+		[
+			'./g.scss',
+			'./h.css',
+			'./i.css',
+			'./j.scss',
+			'./k.scss',
+			'./l.scss',
+			'./m.scss',
+			'./n.css',
+		].sort()
+	);
+} );
+
 test( 'the sideEffects check itself: *.css does not cover a .scss import', () => {
 	expect( sideEffectGlobsCover( [ '*.css' ], 'license-panel.scss' ) ).toBe(
 		false
@@ -48,13 +114,7 @@ test( 'every stylesheet src-react imports is listed in sideEffects', () => {
 	).sideEffects;
 	const imported = sourceFiles( join( ROOT, 'src-react' ) )
 		.filter( ( f ) => /\.jsx?$/.test( f ) && ! /\.test\.jsx?$/.test( f ) )
-		.flatMap( ( f ) =>
-			[
-				...readFileSync( f, 'utf8' ).matchAll(
-					/^import\s+'([^']+\.s?css)';/gm
-				),
-			].map( ( m ) => m[ 1 ] )
-		);
+		.flatMap( ( f ) => importedStyles( readFileSync( f, 'utf8' ) ) );
 	expect( imported.length ).toBeGreaterThan( 0 );
 	for ( const file of imported ) {
 		expect( [ file, sideEffectGlobsCover( globs, file ) ] ).toEqual( [

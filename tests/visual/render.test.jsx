@@ -234,7 +234,9 @@ const BOARDS = [
 	[ 'Lisans-Mobil', 390, { ...BASE, latest_version: '6.4.3' } ],
 ];
 
-function section( [ name, width, license ] ) {
+function section( [ name, width, license ], index ) {
+	// Each static render restarts useId's counter; a prefix per board keeps the
+	// page's ids unique (createRoot shares one counter, so consumers need none).
 	const body = renderToStaticMarkup(
 		<LicensePanel
 			license={ license }
@@ -249,7 +251,8 @@ function section( [ name, width, license ] ) {
 			} }
 			onCheck={ () => {} }
 			onDeactivate={ () => {} }
-		/>
+		/>,
+		{ identifierPrefix: `b${ index }-` }
 	);
 	// Desktop boards: 160px admin menu + 32px main padding each side.
 	const content = width === 390 ? 390 - 32 : width - 160 - 64;

@@ -3,16 +3,19 @@
  * view where a key is stored. The long and short texts are both printed; CSS
  * picks one with disjoint width queries (782/783), as in Slotiva af37f05.
  */
+import { useId } from '@wordpress/element';
+
 import ConfirmButton from '../../../ui-core/src-react/components/ConfirmButton';
 
 export default function MoveCard( { t, busy, onDeactivate } ) {
+	const titleId = useId();
 	return (
 		<section
 			className="mhmprokit-lic-card mhmprokit-lic-move"
-			aria-labelledby="mhmprokit-lic-move-title"
+			aria-labelledby={ titleId }
 		>
 			<div>
-				<h2 id="mhmprokit-lic-move-title">{ t( 'moveTitle' ) }</h2>
+				<h2 id={ titleId }>{ t( 'moveTitle' ) }</h2>
 				<p className="mhmprokit-lic-move__long">{ t( 'moveText' ) }</p>
 				<p className="mhmprokit-lic-move__short">
 					{ t( 'moveTextShort' ) }

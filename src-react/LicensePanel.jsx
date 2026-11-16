@@ -10,7 +10,8 @@
  *   on the server with mhmprokit_mask_license_key()), latest_version, current_version.
  * - `product`: name, accountUrl, supportUrl, buyUrl, renewHelpUrl, downloadUrl,
  *   gives[{icon,title,text}], worksWithout{title,text}, stillWorking, paused,
- *   features[] (optional chips on the active/expiring card).
+ *   features[] (optional chips on the active/expiring card). An empty URL
+ *   draws no button.
  * - `text`: every visible string, translated by the consumer (this package has no
  *   text domain). Functions for strings with a number or a date. Keys:
  *   newTab, checkNow, timeLeft, dayUnit(n), periodLabel, noEndDate, endsOn(date),

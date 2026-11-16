@@ -3,17 +3,21 @@
  * There is no price in the plugin: the plans button shows only when buyUrl is set.
  * `activateBadge` (optional) is Rentiva's "Lite is running" pill.
  */
+import { useId } from '@wordpress/element';
+
 import ActivateForm from './ActivateForm';
 import Icon from './Icon';
 import LinkButton from './LinkButton';
 
 export default function MainView( { t, product, form } ) {
+	const actId = useId();
+	const givesId = useId();
 	const badge = t( 'activateBadge' );
 	return (
 		<div className="mhmprokit-lic-main">
 			<section
 				className="mhmprokit-lic-card mhmprokit-lic-hero"
-				aria-labelledby="mhmprokit-lic-act-title"
+				aria-labelledby={ actId }
 			>
 				<div className="mhmprokit-lic-hero__head">
 					<span className="mhmprokit-lic-hero__icon">
@@ -21,9 +25,7 @@ export default function MainView( { t, product, form } ) {
 					</span>
 					<div>
 						<div className="mhmprokit-lic-status__titlerow">
-							<h2 id="mhmprokit-lic-act-title">
-								{ t( 'activateTitle' ) }
-							</h2>
+							<h2 id={ actId }>{ t( 'activateTitle' ) }</h2>
 							{ badge ? (
 								<span className="mhmprokit-lic-pill">
 									{ badge }
@@ -52,11 +54,9 @@ export default function MainView( { t, product, form } ) {
 			<aside className="mhmprokit-lic-side">
 				<section
 					className="mhmprokit-lic-card mhmprokit-lic-gives"
-					aria-labelledby="mhmprokit-lic-gives-title"
+					aria-labelledby={ givesId }
 				>
-					<h2 id="mhmprokit-lic-gives-title">
-						{ t( 'givesTitle' ) }
-					</h2>
+					<h2 id={ givesId }>{ t( 'givesTitle' ) }</h2>
 					<ul>
 						{ ( product.gives || [] ).map( ( item ) => (
 							<li key={ item.title }>

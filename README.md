@@ -18,7 +18,7 @@ code out of it.
 	],
 	"require": {
 		"mhm/ui-core": "^0.23",
-		"mhm/pro-kit": "^0.1"
+		"mhm/pro-kit": "^0.2"
 	}
 }
 ```
@@ -89,7 +89,17 @@ Things to know:
   draws the activation form (the "none" view); show your own loading line first.
 - **`keyHelp` is a node you build** (a sentence with a link to the account): give
   that link `target="_blank" rel="noopener noreferrer"` yourself.
-- **One panel per page.** Ids are fixed (`mhmprokit-license-key-hero`, …).
+- **Ids are generated per panel** (`useId`), so two panels on one page do not
+  collide (0.2.0; 0.1 had fixed ids and allowed one panel per page).
+- **An empty URL draws no button** (`accountUrl`, `supportUrl`, `buyUrl`,
+  `renewHelpUrl`, `downloadUrl`; blank or `"#"` counts as empty): never a link
+  without an address. Without `accountUrl` the active card also drops its
+  "Account" row.
+- **`accountUrl` is required in practice.** It is the only way out of the
+  expiring ("Manage subscription") and expired ("Renew license") views; leave it
+  empty and the admin is left with "Check now" alone.
+- **Needs WordPress 6.2+** (React 18): ids come from `useId`, which
+  `wp.element` exports from 6.2 on.
 - **Styles** come from `src-react/license-panel.scss`, imported by the component.
   Your wp-scripts build compiles it into your bundle's CSS (`package.json`
   `sideEffects` keeps it from being tree-shaken); enqueue that CSS on the page.

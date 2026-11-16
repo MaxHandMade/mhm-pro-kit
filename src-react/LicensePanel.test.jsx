@@ -518,3 +518,85 @@ test( 'download_in_the_new_version_strip_is_a_primary_new_tab_button', () => {
 	expect( link.getAttribute( 'rel' ) ).toBe( 'noopener noreferrer' );
 	expect( link.textContent ).toContain( '(opens in a new tab)' );
 } );
+
+// 0.2.0: two panels on one page, and links the consumer did not configure.
+
+const VIEWS = [
+	[ 'main', NONE ],
+	[ 'active', { ...ACTIVE, latest_version: '1.2.0' } ],
+	[ 'expiring', { ...ACTIVE, state: 'expiring', days_left: 9 } ],
+	[ 'expired', { ...ACTIVE, state: 'expired', reason: 'expired' } ],
+	[ 'unverified', { ...ACTIVE, state: 'expired', reason: 'unverified' } ],
+	[ 'offline', { ...ACTIVE, state: 'grace', grace_until: '2026-11-20' } ],
+];
+
+test.each( VIEWS )(
+	'two_%s_panels_on_one_page_keep_ids_unique_and_references_local',
+	( name, license ) => {
+		const props = {
+			license,
+			product: PRODUCT,
+			text: TEXT,
+			format: FORMAT,
+		};
+		const { container } = render(
+			<>
+				<div data-panel="a">
+					<LicensePanel { ...props } />
+				</div>
+				<div data-panel="b">
+					<LicensePanel { ...props } />
+				</div>
+			</>
+		);
+		const ids = Array.from( container.querySelectorAll( '[id]' ) ).map(
+			( el ) => el.id
+		);
+		expect( ids.length ).toBeGreaterThan( 0 );
+		expect( new Set( ids ).size ).toBe( ids.length );
+		const refs = container.querySelectorAll(
+			'[aria-labelledby], [aria-describedby], label[for]'
+		);
+		expect( refs.length ).toBeGreaterThan( 0 );
+		for ( const el of refs ) {
+			const wanted =
+				el.getAttribute( 'aria-labelledby' ) ||
+				el.getAttribute( 'aria-describedby' ) ||
+				el.getAttribute( 'for' );
+			const own = el.closest( '[data-panel]' );
+			expect( [
+				wanted,
+				own.querySelector( `[id="${ wanted }"]` ),
+			] ).not.toEqual( [ wanted, null ] );
+		}
+	}
+);
+
+const BLANK_URLS = [ '', ' ', '#' ];
+
+test.each(
+	VIEWS.flatMap( ( [ name, license ] ) =>
+		BLANK_URLS.map( ( url ) => [
+			name,
+			JSON.stringify( url ),
+			license,
+			url,
+		] )
+	)
+)( '%s_with_url_%s_draws_no_dead_link', ( name, shown, license, url ) => {
+	const { container } = panel( license, {
+		product: {
+			...PRODUCT,
+			accountUrl: url,
+			supportUrl: url,
+			downloadUrl: url,
+		},
+	} );
+	for ( const a of container.querySelectorAll( 'a' ) ) {
+		expect( [ a.textContent, a.getAttribute( 'href' ) ] ).toEqual( [
+			a.textContent,
+			expect.stringMatching( /^https?:\/\// ),
+		] );
+	}
+	expect( container.textContent ).not.toContain( 'Your WP Alemi account' );
+} );
