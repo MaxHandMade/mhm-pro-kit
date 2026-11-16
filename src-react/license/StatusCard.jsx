@@ -9,7 +9,7 @@ import { useId } from '@wordpress/element';
 import ActivateForm from './ActivateForm';
 import CheckButton from './CheckButton';
 import Icon from './Icon';
-import LinkButton from './LinkButton';
+import LinkButton, { usableUrl } from './LinkButton';
 
 export const PERIOD_DAYS = 365; // Sold yearly only.
 
@@ -166,7 +166,7 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 						small
 					/>
 				</Fact>
-				{ product.accountUrl ? (
+				{ usableUrl( product.accountUrl ) ? (
 					<Fact label={ t( 'accountFact' ) }>
 						<LinkButton
 							href={ product.accountUrl }

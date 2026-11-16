@@ -572,13 +572,24 @@ test.each( VIEWS )(
 	}
 );
 
-test.each( VIEWS )( '%s_without_urls_draws_no_dead_link', ( name, license ) => {
+const BLANK_URLS = [ '', ' ', '#' ];
+
+test.each(
+	VIEWS.flatMap( ( [ name, license ] ) =>
+		BLANK_URLS.map( ( url ) => [
+			name,
+			JSON.stringify( url ),
+			license,
+			url,
+		] )
+	)
+)( '%s_with_url_%s_draws_no_dead_link', ( name, shown, license, url ) => {
 	const { container } = panel( license, {
 		product: {
 			...PRODUCT,
-			accountUrl: '',
-			supportUrl: '',
-			downloadUrl: '',
+			accountUrl: url,
+			supportUrl: url,
+			downloadUrl: url,
 		},
 	} );
 	for ( const a of container.querySelectorAll( 'a' ) ) {

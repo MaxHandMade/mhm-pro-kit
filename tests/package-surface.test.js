@@ -34,11 +34,15 @@ function sideEffectGlobsCover( globs, file ) {
 }
 
 function importedStyles( source ) {
-	// import 'x.css' · import s from "x.css" · require( 'x.less' ) · const s = require(…)
-	// for .css/.scss/.sass/.less; a commented-out line does not count.
+	// Any `import '…'`, `import(…)`, `… from '…'` or `require(…)` naming a
+	// .css/.scss/.sass/.less (any quote, optional ?query), anywhere on a line.
+	// Comments are dropped first; a `//` right after ":" (a URL) is kept.
+	const code = source
+		.replace( /\/\*[\s\S]*?\*\//g, '' )
+		.replace( /(^|[^:])\/\/.*$/gm, '$1' );
 	const pattern =
-		/^\s*(?:import\s+(?:[^'";]+\s+from\s+)?|(?:(?:const|let|var)\s+\w+\s*=\s*)?require\(\s*)['"]([^'"]+\.(?:css|s[ac]ss|less))['"]/gm;
-	return [ ...source.matchAll( pattern ) ].map( ( m ) => m[ 1 ] );
+		/(?:\bimport\s*\(?|\bfrom|\brequire\s*\()\s*(['"`])([^'"`?]+\.(?:css|s[ac]ss|less))(?:\?[^'"`]*)?\1/g;
+	return [ ...code.matchAll( pattern ) ].map( ( m ) => m[ 2 ] );
 }
 
 test( 'the stylesheet finder sees every way a stylesheet is pulled in (0.2.0)', () => {
@@ -61,6 +65,36 @@ test( 'the stylesheet finder sees every way a stylesheet is pulled in (0.2.0)', 
 			'./d.module.css',
 			'./e.less',
 			'./f.scss',
+		].sort()
+	);
+} );
+
+test( 'the stylesheet finder sees the spellings Fable found missing (0.2.0)', () => {
+	const source = [
+		"const lazy = import( './g.scss' );",
+		"await import('./h.css');",
+		"if ( x ) { require( './i.css' ); }",
+		"const { a } = require( './j.scss' );",
+		"export * from './k.scss';",
+		"import a from './a'; import './l.scss';",
+		"import './m.scss?inline';",
+		'require( `./n.css` );',
+		"/* import './block-comment.css'; */",
+		'/*',
+		" import './multi-line-comment.css';",
+		' */',
+		"const url = 'https://example.com/x'; // import './trailing.css';",
+	].join( '\n' );
+	expect( importedStyles( source ).sort() ).toEqual(
+		[
+			'./g.scss',
+			'./h.css',
+			'./i.css',
+			'./j.scss',
+			'./k.scss',
+			'./l.scss',
+			'./m.scss',
+			'./n.css',
 		].sort()
 	);
 } );
