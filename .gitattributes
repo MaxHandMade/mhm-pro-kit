@@ -9,7 +9,7 @@
 *.test.js          export-ignore
 *.test.jsx         export-ignore
 /jest.config.js    export-ignore
-/.eslintrc.js      export-ignore
+/eslint.config.cjs export-ignore
 /phpcs.xml         export-ignore
 /phpstan.neon      export-ignore
 /phpunit.xml       export-ignore
