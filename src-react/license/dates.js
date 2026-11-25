@@ -19,7 +19,7 @@ export function formatDate( iso ) {
 			dateStyle: 'long',
 			timeZone: 'UTC',
 		} ).format( new Date( iso ) );
-	} catch ( e ) {
+	} catch {
 		return iso.slice( 0, 10 );
 	}
 }
@@ -37,7 +37,7 @@ export function formatDateTime( iso ) {
 	try {
 		const { formats } = getSettings();
 		return dateI18n( formats.datetime || 'F j, Y g:i a', iso );
-	} catch ( e ) {
+	} catch {
 		return iso.slice( 0, 10 );
 	}
 }
@@ -54,7 +54,7 @@ export function relativeTime( iso ) {
 	}
 	try {
 		return humanTimeDiff( iso );
-	} catch ( e ) {
+	} catch {
 		return formatDateTime( iso );
 	}
 }

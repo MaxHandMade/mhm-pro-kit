@@ -297,7 +297,7 @@ function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
 								? t(
 										'expiredText',
 										format.date( license.expires_at )
-								  )
+									)
 								: t( 'notActiveText' ) }
 						</p>
 					</div>
