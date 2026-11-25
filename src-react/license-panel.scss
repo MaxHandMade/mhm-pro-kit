@@ -23,6 +23,7 @@
 	--lic-warn-fill: var(--mhmui-warning, #dba617);
 	--lic-warn-soft: var(--mhmui-warning-soft, #fff3cd);
 	--lic-bad: var(--mhmui-danger-ink, #b32d2e);
+	--lic-bad-strong: var(--mhmui-danger-strong, #a02224);
 	--lic-bad-soft: var(--mhmui-danger-soft, #fbe0e0);
 
 	// Pale halos and tints derived from the soft tokens (no kit token for them).
@@ -42,6 +43,14 @@
 	p {
 		margin: 0;
 	}
+}
+
+// Shell rhythm (0.2.1): as a DIRECT child of ui-core's shell the panel is
+// spaced like the shell's own members (ui-core admin.css, `.mhmui-admin-page >
+// * + :is(…)`, 0,2,0, --mhmui-space-3). Without it the panel sat 0px under the
+// PageHeader in Rentiva Pro. Nested in a wrapper (Slotiva Pro) it does not match.
+.mhmui-admin-page > * + .mhmprokit-license {
+	margin-block-start: var(--mhmui-space-3, 12px);
 }
 
 .mhmprokit-lic-stack,
@@ -136,6 +145,30 @@
 		&:hover:not(:disabled) {
 			color: var(--lic-on-primary);
 			background: var(--lic-primary-dark);
+		}
+	}
+
+	// Urgent main action (expiring, URGENT_DAYS or fewer left): the primary
+	// button in red. Hover at the base rule's specificity, as above.
+	&--link-danger {
+		background: var(--lic-bad);
+		border-color: var(--lic-bad);
+		color: var(--lic-on-primary);
+		font-weight: 600;
+
+		&:focus,
+		&:visited {
+			color: var(--lic-on-primary);
+		}
+
+		&:focus-visible {
+			outline-color: var(--lic-bad);
+		}
+
+		&:hover:not(:disabled) {
+			color: var(--lic-on-primary);
+			background: var(--lic-bad-strong);
+			border-color: var(--lic-bad-strong);
 		}
 	}
 }

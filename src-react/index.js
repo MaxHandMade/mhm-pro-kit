@@ -3,3 +3,4 @@
  * vendor/mhm/pro-kit/src-react/ by relative path, like ui-core.
  */
 export { default as LicensePanel, viewFor } from './LicensePanel';
+export { URGENT_DAYS } from './license/StatusCard';

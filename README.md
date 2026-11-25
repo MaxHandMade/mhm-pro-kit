@@ -98,6 +98,13 @@ Things to know:
 - **`accountUrl` is required in practice.** It is the only way out of the
   expiring ("Manage subscription") and expired ("Renew license") views; leave it
   empty and the admin is left with "Check now" alone.
+- **The expiring card turns urgent at 7 days or fewer** (`URGENT_DAYS`, exported):
+  its pill and "Manage subscription" go red (0.2.1). The threshold is the
+  package's, shared by every consumer; `days_left` drives it.
+- **Inside ui-core's shell** (`.mhmui-admin-page`), render the panel as a direct
+  child after your `PageHeader`/notices: it then gets the shell's
+  `--mhmui-space-3` rhythm like ui-core's own members (0.2.1). Nested in your
+  own wrapper, the wrapper spaces it.
 - **Needs WordPress 6.2+** (React 18): ids come from `useId`, which
   `wp.element` exports from 6.2 on.
 - **Styles** come from `src-react/license-panel.scss`, imported by the component.

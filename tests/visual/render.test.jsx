@@ -211,6 +211,16 @@ const BOARDS = [
 		},
 	],
 	[
+		'Lisans-Bitiyor (≤7, acil)',
+		1440,
+		{
+			...BASE,
+			state: 'expiring',
+			days_left: 5,
+			expires_at: '2026-11-16T00:00:00Z',
+		},
+	],
+	[
 		'Lisans-Doldu',
 		1440,
 		{
