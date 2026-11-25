@@ -1,10 +1,10 @@
 /**
- * ESLint flat config. @wordpress/scripts 37 runs ESLint 10 and reads only an
+ * ESLint flat config. `@wordpress/scripts` 37 runs ESLint 10 and reads only an
  * eslint.config.* file; the old .eslintrc.js was ignored without an error, so
  * its overrides (jest globals, the i18n restrictions) were silently gone.
  * Ported from .eslintrc.js; base and Jest block follow scripts 37's
  * docs/vitest-migration.md, "Keep Jest lint rules" (same as mhm-ui-core).
- * package.json pins eslint and @wordpress/eslint-plugin to the versions
+ * package.json pins eslint and `@wordpress/eslint-plugin` to the versions
  * scripts 37 depends on, so the tree holds one copy of each.
  */
 const wpPlugin = require( '@wordpress/eslint-plugin' );
