@@ -1,5 +1,5 @@
 /**
- * Jest, kept on purpose after @wordpress/scripts 37 moved `test-unit-js` to
+ * Jest, kept on purpose after `@wordpress/scripts` 37 moved `test-unit-js` to
  * Vitest. 37 no longer ships config/jest-unit.config.js or a bundled Jest;
  * this is the "tested legacy combination" from its docs/vitest-migration.md
  * (Keep an existing Jest suite): the published WordPress preset plus
