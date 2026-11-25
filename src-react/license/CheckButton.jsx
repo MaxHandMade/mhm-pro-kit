@@ -4,12 +4,12 @@ import Icon from './Icon';
  * "Check now". `small` = the inline button in the facts row (with the refresh
  * icon); otherwise a full-size primary or outline button (help cards, actions).
  *
- * @param {Object}   props
- * @param {string}   props.label     Button text.
- * @param {Function} props.onCheck   Click handler.
- * @param {boolean}  props.busy      A request is running.
- * @param {boolean}  [props.small]   Inline facts-row size.
- * @param {boolean}  [props.primary] Primary instead of outline.
+ * @param {Object}     props
+ * @param {string}     props.label     Button text.
+ * @param {() => void} props.onCheck   Click handler.
+ * @param {boolean}    props.busy      A request is running.
+ * @param {boolean}    [props.small]   Inline facts-row size.
+ * @param {boolean}    [props.primary] Primary instead of outline.
  */
 export default function CheckButton( {
 	label,

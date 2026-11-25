@@ -3,13 +3,13 @@
  * key?" on the expired view. `keyHelp` is a node the consumer builds (a
  * translated sentence holding a link to the account).
  *
- * @param {Object}   props
- * @param {Function} props.t         Text reader (license/text.js).
- * @param {string}   [props.variant] hero | compact.
- * @param {string}   props.value     Current key.
- * @param {Function} props.onChange  Called with the new key.
- * @param {Function} props.onSubmit  Form submit handler.
- * @param {boolean}  props.busy      A request is running.
+ * @param {Object}                                       props
+ * @param {(key: string, ...args: unknown[]) => unknown} props.t         Text reader (license/text.js).
+ * @param {string}                                       [props.variant] hero | compact.
+ * @param {string}                                       props.value     Current key.
+ * @param {(key: string) => void}                        props.onChange  Called with the new key.
+ * @param {(event: Event) => void}                       props.onSubmit  Form submit handler.
+ * @param {boolean}                                      props.busy      A request is running.
  */
 import { useId } from '@wordpress/element';
 

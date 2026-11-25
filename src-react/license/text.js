@@ -4,7 +4,7 @@
  * text domain). A missing key prints nothing rather than an English fallback.
  *
  * @param {Object} text Consumer's translated strings.
- * @return {Function} ( key, ...args ) => string|node.
+ * @return {(key: string, ...args: unknown[]) => unknown} Reader: a string, a node, or the consumer function's result.
  */
 export function reader( text ) {
 	return ( key, ...args ) => {
