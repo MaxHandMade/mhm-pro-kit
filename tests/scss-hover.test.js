@@ -44,3 +44,16 @@ test( 'the primary hover rule comes after the base hover rule (equal specificity
 	expect( base ).toBeGreaterThan( -1 );
 	expect( fix ).toBeGreaterThan( base );
 } );
+
+test( 'danger link button (urgent expiry, 0.2.1) keeps light text on hover after the base rule', () => {
+	const rules = rulesFor(
+		'.mhmprokit-lic-btn--link-danger:hover:not(:disabled)'
+	).join( ';' );
+	expect( rules ).toContain( 'color: var(--lic-on-primary)' );
+	expect( rules ).toContain( 'background: var(--lic-bad-strong)' );
+	expect(
+		css.indexOf( '.mhmprokit-lic-btn--link-danger:hover:not(:disabled)' )
+	).toBeGreaterThan(
+		css.indexOf( '.mhmprokit-lic-btn:hover:not(:disabled)' )
+	);
+} );

@@ -1,5 +1,6 @@
 /**
- * Status card for a license the site holds: active (green), expiring (amber),
+ * Status card for a license the site holds: active (green), expiring (amber;
+ * red pill and main action at URGENT_DAYS or fewer),
  * expired (red). Extracted from Slotiva af37f05; every string comes from `t`,
  * product links from `product`. `product.features` (optional, Rentiva) draws
  * the "on this site" chips on the active and expiring cards.
@@ -12,6 +13,11 @@ import Icon from './Icon';
 import LinkButton, { usableUrl } from './LinkButton';
 
 export const PERIOD_DAYS = 365; // Sold yearly only.
+
+// At this many days left or fewer the expiring card is urgent: its pill and
+// main action turn red (Rentiva's approved design, the same threshold as its
+// old compute_emphasis_class). One value for every consumer.
+export const URGENT_DAYS = 7;
 
 function Fact( { label, children } ) {
 	return (
@@ -189,9 +195,12 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 	const titleId = useId();
 	const days = license.days_left || 0;
+	const urgent = days <= URGENT_DAYS;
 	return (
 		<section
-			className="mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--warn"
+			className={ `mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--warn${
+				urgent ? ' mhmprokit-lic-status--urgent' : ''
+			}` }
 			aria-labelledby={ titleId }
 		>
 			<div className="mhmprokit-lic-status__top">
@@ -204,7 +213,11 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 							<h2 id={ titleId }>
 								{ t( 'expiringTitle', days ) }
 							</h2>
-							<span className="mhmprokit-lic-pill mhmprokit-lic-pill--warn">
+							<span
+								className={ `mhmprokit-lic-pill mhmprokit-lic-pill--${
+									urgent ? 'bad' : 'warn'
+								}` }
+							>
 								{ t( 'expiringPill', days ) }
 							</span>
 						</div>
@@ -217,7 +230,7 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 						<div className="mhmprokit-lic-actions">
 							<LinkButton
 								href={ product.accountUrl }
-								variant="primary"
+								variant={ urgent ? 'danger' : 'primary' }
 								newTab={ t( 'newTab' ) }
 							>
 								{ t( 'manageSubscription' ) }

@@ -6,6 +6,7 @@
 import { act, render, screen, fireEvent } from '@testing-library/react';
 
 import LicensePanel, { viewFor } from './LicensePanel';
+import { URGENT_DAYS } from './license/StatusCard';
 
 const TEXT = {
 	newTab: '(opens in a new tab)',
@@ -245,6 +246,46 @@ test( 'expiring_shows_manage_subscription_as_new_tab_primary_button', () => {
 	expect(
 		screen.queryByRole( 'link', { name: /How does renewal work/ } )
 	).toBeNull();
+} );
+
+// Rentiva's approved design (11-11 handoff §2, its old compute_emphasis_class):
+// at 7 days left or fewer the pill and the main action go red; 8 stays amber/blue.
+test.each( [
+	[ 8, 'warn', 'primary', false ],
+	[ 7, 'bad', 'danger', true ],
+	[ 0, 'bad', 'danger', true ],
+] )(
+	'expiring_with_%i_days_left_has_a_%s_pill_and_a_%s_main_action',
+	( days, pillTone, buttonVariant, urgent ) => {
+		const { container } = panel( {
+			...ACTIVE,
+			state: 'expiring',
+			days_left: days,
+		} );
+		const pill = screen.getByText( `${ days } days left` );
+		const manage = screen.getByRole( 'link', {
+			name: /^Manage subscription/,
+		} );
+		expect(
+			[ ...pill.classList ].filter( ( c ) =>
+				c.startsWith( 'mhmprokit-lic-pill--' )
+			)
+		).toEqual( [ `mhmprokit-lic-pill--${ pillTone }` ] );
+		expect(
+			[ ...manage.classList ].filter( ( c ) =>
+				c.startsWith( 'mhmprokit-lic-btn--link-' )
+			)
+		).toEqual( [ `mhmprokit-lic-btn--link-${ buttonVariant }` ] );
+		expect(
+			container
+				.querySelector( '.mhmprokit-lic-status' )
+				.classList.contains( 'mhmprokit-lic-status--urgent' )
+		).toBe( urgent );
+	}
+);
+
+test( 'urgent_threshold_is_exported_as_seven', () => {
+	expect( URGENT_DAYS ).toBe( 7 );
 } );
 
 test( 'expiring_renewal_help_only_when_configured', () => {
