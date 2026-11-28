@@ -17,7 +17,7 @@
  *   newTab, checkNow, timeLeft, dayUnit(n), periodLabel, noEndDate, endsOn(date),
  *   latestTitle(name, version), latestText(installed), download(version),
  *   activeTitle, activePill, activeText, featuresLabel, keyFact, lastCheckFact,
- *   accountFact, accountButton, accountHint, expiringTitle(n), expiringPill(n), expiringText(date),
+ *   accountFact, accountButton, accountHint, expiringTitle(n), expiringPill(n), expiresTodayPill (optional, 0 days), expiringText(date),
  *   manageSubscription, renewHelp, updatesStayOn, whenItEnds, whenItEndsText,
  *   expiredTitle, notActiveTitle, expiredPill, expiredText(date), notActiveText,
  *   renew, renewedCheck, stillWorking, paused, otherKeyTitle, newKeyLabel, activate,

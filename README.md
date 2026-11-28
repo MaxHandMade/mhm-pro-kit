@@ -116,6 +116,27 @@ Things to know:
   inline-size container takes no width from its content.
 - **Grace without a usable count** (`daysUntil( grace_until )` 0 or less, or
   not a number) prints `offlineLong`, not `offlineStays( 0 )` (0.2.2).
+- **The last day can say "today"** (0.2.3): give the optional text key
+  `expiresTodayPill` ("Ends today") and the expiring card's pill uses it at
+  `days_left` 0 instead of `expiringPill( 0 )` ("0 days left"). Without the key
+  the pill is unchanged.
+- **Missing data draws no broken line** (0.2.3): without `current_version` the
+  new-version strip drops the `latestText` sentence ("You have ."); without
+  `key_masked` the active and expiring cards drop the "Key" row; without
+  `expires_at` the expiring card drops `expiringText` ("Ends on ."); an empty
+  `product.stillWorking` or `product.paused` drops that item of the expired
+  card's split, both drop the split.
+- **Narrow panels** (0.2.3): the help cards' title (unverified, offline) goes
+  under its icon when it cannot keep 10.5em beside it. From a 390px screen up
+  it stays beside the icon as before; at 360px and below it goes under, in
+  fewer lines (German at 320px: seven lines in a 153px column, now four at
+  full width). Under a 480px panel the key field uses 16px untracked type
+  (not less: iOS Safari zooms into a field under 16px): a 30-character key ran
+  121px past the field at 320px, now 62px; 81px at 360px, now 22px; 0 from
+  390px (a 19-character key fitted before and after).
+- **`expiresTodayPill` applies only at `days_left === 0`**: an unknown count
+  (null, missing) keeps `expiringPill`. A date `format.date` cannot print
+  drops `expiringText` / `expiredText` like a missing one.
 - **Upgrading from 0.2.1:** between a 783 and ~1200px viewport the first-run
   view is now stacked (it was two columns with a 51-168px key field). Consumer
   CSS that set `.mhmprokit-lic-main` inside a 783px media query should move to
