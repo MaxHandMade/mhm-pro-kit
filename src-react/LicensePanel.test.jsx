@@ -741,3 +741,19 @@ test( 'expired_split_is_gone_when_both_product_texts_are_empty', () => {
 	);
 	expect( container.querySelector( '.mhmprokit-lic-split' ) ).toBeNull();
 } );
+
+test( 'unknown_days_left_never_says_today', () => {
+	panel(
+		{ ...ACTIVE, state: 'expiring', days_left: null },
+		{ text: { ...TEXT, expiresTodayPill: 'Ends today' } }
+	);
+	expect( screen.queryByText( 'Ends today' ) ).toBeNull();
+} );
+
+test( 'a_date_format_cannot_print_drops_the_ends_on_sentence', () => {
+	const { container } = panel(
+		{ ...ACTIVE, state: 'expiring', days_left: 9 },
+		{ format: { ...FORMAT, date: () => '' } }
+	);
+	expect( container.textContent ).not.toMatch( /Ends on \./ );
+} );

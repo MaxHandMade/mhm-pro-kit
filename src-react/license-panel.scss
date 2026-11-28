@@ -756,7 +756,9 @@
 
 	// Wraps (0.2.3): beside the icon a long title ("Der Schlüssel ist
 	// gespeichert, …") drew in a 153px column, seven lines at 320px. The title
-	// keeps 12em beside the icon or goes under it, as on the expiring card.
+	// keeps 10.5em beside the icon or goes under it, as on the expiring card.
+	// 10.5em (210px), not 12em: at 390px the two titles have 223 and 215px beside
+	// the icon and stay there; at 360px (193px) they go under, in fewer lines.
 	&__head {
 		display: flex;
 		flex-wrap: wrap;
@@ -764,7 +766,7 @@
 		align-items: center;
 
 		h2 {
-			flex: 1 1 12em;
+			flex: 1 1 10.5em;
 			min-width: 0;
 			font-size: 20px;
 			font-weight: 600;
@@ -825,10 +827,11 @@
 // A narrow panel draws the key field in a tighter type (0.2.3). At 17px
 // monospace with 0.08em tracking a character is ~11.5px: a 19-character
 // XXXX-XXXX-XXXX-XXXX key fitted, but a 30-character one ran 121px past the
-// 211px field at a 320px screen (51px at 390px). 15px untracked: 45px / 0.
+// 211px field at a 320px screen (51px at 390px). 16px untracked, not less:
+// iOS Safari zooms the page into a field under 16px (Fable 0.2.3).
 @container mhmprokit-license (max-width: 479px) {
 	.mhmprokit-lic-form input[type="text"] {
-		font-size: 15px;
+		font-size: 16px;
 		letter-spacing: 0;
 	}
 }

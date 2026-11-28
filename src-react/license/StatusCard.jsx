@@ -208,7 +208,7 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 	const urgent = days <= URGENT_DAYS;
 	// On the last day "0 days left" reads as a count; an optional key says "today" (0.2.3).
 	const pill =
-		days === 0 && t( 'expiresTodayPill' )
+		license.days_left === 0 && t( 'expiresTodayPill' )
 			? t( 'expiresTodayPill' )
 			: t( 'expiringPill', days );
 	return (
@@ -236,7 +236,8 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 								{ pill }
 							</span>
 						</div>
-						{ license.expires_at ? (
+						{ /* No date, or one format.date cannot print: no "Ends on ." (0.2.3). */ }
+						{ format.date( license.expires_at ) ? (
 							<p>
 								{ t(
 									'expiringText',
@@ -325,7 +326,7 @@ function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
 							</span>
 						</div>
 						<p>
-							{ ended && license.expires_at
+							{ ended && format.date( license.expires_at )
 								? t(
 										'expiredText',
 										format.date( license.expires_at )
