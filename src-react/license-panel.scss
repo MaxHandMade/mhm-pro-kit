@@ -33,9 +33,10 @@
 	--lic-bad-halo: color-mix(in srgb, var(--lic-bad-soft) 35%, var(--lic-surface));
 	--lic-info-edge: color-mix(in srgb, var(--lic-primary) 15%, var(--lic-primary-soft));
 
-	// Full width up to the cap even in a shrink-to-fit parent (column flex with
-	// align-items: start, start-aligned grid, float): an inline-size container
-	// takes no width from its content and would collapse there.
+	// Full width up to the cap even in a start-aligned column flex or grid
+	// parent: an inline-size container takes no width from its content and
+	// would collapse there. A parent that is itself shrink-to-fit still
+	// collapses it (README).
 	width: 100%;
 	max-width: 1040px;
 	color: var(--lic-text);
