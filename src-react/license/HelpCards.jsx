@@ -74,7 +74,8 @@ export function OfflineCard( { t, format, license, busy, onCheck } ) {
 				<h2 id={ titleId }>{ t( 'offlineTitle' ) }</h2>
 			</div>
 			<p>
-				{ left === null
+				{ /* No date, or grace is over (0 or less): "stays on for 0 more days" would be false. */ }
+				{ left === null || left <= 0
 					? t( 'offlineLong' )
 					: t( 'offlineStays', left ) }
 			</p>

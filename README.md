@@ -106,6 +106,14 @@ Things to know:
   child after your `PageHeader`/notices: it then gets the shell's
   `--mhmui-space-3` rhythm like ui-core's own members (0.2.1). Nested in your
   own wrapper, the wrapper spaces it.
+- **The panel root is a CSS container** (`container-type: inline-size`, name
+  `mhmprokit-license`, 0.2.2): the first-run view puts the key card and "what a
+  license unlocks" side by side only when the PANEL is 900px wide, and stacks
+  them below that. Give it a block-level parent (a div, the shell); inside a
+  shrink-to-fit parent (inline-block, a flex row item with no width) an
+  inline-size container has no content width and collapses.
+- **Grace that has run out** (`daysUntil( grace_until )` 0 or less) prints
+  `offlineLong`, not `offlineStays( 0 )` (0.2.2).
 - **Needs WordPress 6.2+** (React 18): ids come from `useId`, which
   `wp.element` exports from 6.2 on.
 - **Styles** come from `src-react/license-panel.scss`, imported by the component.

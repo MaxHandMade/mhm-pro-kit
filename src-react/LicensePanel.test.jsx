@@ -539,6 +539,20 @@ test( 'typing_without_a_form_prop_does_not_throw', () => {
 	).not.toThrow();
 } );
 
+test.each( [ 0, -2 ] )(
+	'grace_with_%i_days_left_says_the_long_text_not_zero_more_days',
+	( left ) => {
+		// The day grace ends (daysUntil clamps a past date to 0; a consumer
+		// format may return less): "stays on for 0 more days" was false.
+		panel(
+			{ ...ACTIVE, state: 'grace', grace_until: '2026-11-20T00:00:00Z' },
+			{ format: { ...FORMAT, daysUntil: () => left } }
+		);
+		expect( screen.getByText( /more than 7 days/ ) ).not.toBeNull();
+		expect( screen.queryByText( /more days/ ) ).toBeNull();
+	}
+);
+
 test( 'grace_bar_never_goes_below_zero', () => {
 	panel(
 		{ ...ACTIVE, state: 'grace', grace_until: '2026-11-20T00:00:00Z' },

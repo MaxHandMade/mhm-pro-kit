@@ -1,7 +1,8 @@
 /**
  * License screen (1.0.2 redesign, artboards license/*). Every colour is a ui-core token with the design hex as
  * fallback. Width-dependent `display` (grid vs flex) lives ONLY inside the disjoint max-width:782px /
- * min-width:783px queries at the bottom; touch targets >= 44px.
+ * min-width:783px queries at the bottom, except the first-run columns, which follow the panel's own
+ * width (container query, 0.2.2); touch targets >= 44px.
  */
 .mhmprokit-license {
 	--lic-surface: var(--mhmui-surface, #ffffff);
@@ -34,6 +35,10 @@
 
 	max-width: 1040px;
 	color: var(--lic-text);
+	// The first-run view's columns follow the panel's own width (0.2.2), not
+	// the viewport: see `.mhmprokit-lic-main` below.
+	container-type: inline-size;
+	container-name: mhmprokit-license;
 
 	h2 {
 		margin: 0;
@@ -795,15 +800,28 @@
 	letter-spacing: 0.06em;
 }
 
-// ---- layout by width (disjoint queries: the only place width-dependent `display` is set) -----------------------
-@media (min-width: 783px) {
+// ---- first-run view: stacked unless the PANEL is 900px wide (0.2.2) --------------------------------------------
+// With the 380px side column switched on at a 783px viewport, the key field
+// shrank to 51-168px between 783 and ~1060px (folded admin menu, 1024px
+// tablets, 200% zoom) and a XXXX-XXXX-XXXX-XXXX key did not fit. At 900px of
+// panel width the key card keeps ~430px: field and button side by side.
+.mhmprokit-lic-main {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+@container mhmprokit-license (min-width: 900px) {
 	.mhmprokit-lic-main {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 380px;
 		gap: 24px;
 		align-items: start;
 	}
+}
 
+// ---- layout by width (disjoint queries: the only place width-dependent `display` is set) -----------------------
+@media (min-width: 783px) {
 	.mhmprokit-lic-status__top {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 300px;
@@ -839,12 +857,6 @@
 }
 
 @media (max-width: 782px) {
-	.mhmprokit-lic-main {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-	}
-
 	.mhmprokit-lic-status__top {
 		display: flex;
 		flex-direction: column;
