@@ -539,7 +539,7 @@ test( 'typing_without_a_form_prop_does_not_throw', () => {
 	).not.toThrow();
 } );
 
-test.each( [ 0, -2 ] )(
+test.each( [ 0, -2, undefined, NaN ] )(
 	'grace_with_%i_days_left_says_the_long_text_not_zero_more_days',
 	( left ) => {
 		// The day grace ends (daysUntil clamps a past date to 0; a consumer

@@ -109,11 +109,17 @@ Things to know:
 - **The panel root is a CSS container** (`container-type: inline-size`, name
   `mhmprokit-license`, 0.2.2): the first-run view puts the key card and "what a
   license unlocks" side by side only when the PANEL is 900px wide, and stacks
-  them below that. Give it a block-level parent (a div, the shell); inside a
-  shrink-to-fit parent (inline-block, a flex row item with no width) an
-  inline-size container has no content width and collapses.
-- **Grace that has run out** (`daysUntil( grace_until )` 0 or less) prints
-  `offlineLong`, not `offlineStays( 0 )` (0.2.2).
+  them below that. The root sets `width: 100%` (capped at 1040px), so it keeps
+  its width in a column flex or grid parent that start-aligns its children.
+  Only a parent that is itself shrink-to-fit (inline-block, float,
+  `width: fit-content`, a flex row item with no width) still collapses it: an
+  inline-size container takes no width from its content.
+- **Grace without a usable count** (`daysUntil( grace_until )` 0 or less, or
+  not a number) prints `offlineLong`, not `offlineStays( 0 )` (0.2.2).
+- **Upgrading from 0.2.1:** between a 783 and ~1200px viewport the first-run
+  view is now stacked (it was two columns with a 51-168px key field). Consumer
+  CSS that set `.mhmprokit-lic-main` inside a 783px media query should move to
+  `@container mhmprokit-license`.
 - **Needs WordPress 6.2+** (React 18): ids come from `useId`, which
   `wp.element` exports from 6.2 on.
 - **Styles** come from `src-react/license-panel.scss`, imported by the component.

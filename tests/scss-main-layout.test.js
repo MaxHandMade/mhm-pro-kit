@@ -60,6 +60,8 @@ test( 'the panel root is an inline-size container', () => {
 		.join( ';' );
 	expect( root ).toMatch( /container-type:\s*inline-size/ );
 	expect( root ).toMatch( /container-name:\s*mhmprokit-license/ );
+	// Keeps its width in a start-aligned flex/grid parent (Fable 0.2.2).
+	expect( root ).toMatch( /(?:^|[;\s])width:\s*100%/ );
 } );
 
 test( 'the two-column first-run grid needs 900px of panel width, not a viewport query', () => {
