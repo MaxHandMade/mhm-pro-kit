@@ -116,6 +116,22 @@ Things to know:
   inline-size container takes no width from its content.
 - **Grace without a usable count** (`daysUntil( grace_until )` 0 or less, or
   not a number) prints `offlineLong`, not `offlineStays( 0 )` (0.2.2).
+- **The last day can say "today"** (0.2.3): give the optional text key
+  `expiresTodayPill` ("Ends today") and the expiring card's pill uses it at
+  `days_left` 0 instead of `expiringPill( 0 )` ("0 days left"). Without the key
+  the pill is unchanged.
+- **Missing data draws no broken line** (0.2.3): without `current_version` the
+  new-version strip drops the `latestText` sentence ("You have ."); without
+  `key_masked` the active and expiring cards drop the "Key" row; without
+  `expires_at` the expiring card drops `expiringText` ("Ends on ."); an empty
+  `product.stillWorking` or `product.paused` drops that item of the expired
+  card's split, both drop the split.
+- **Narrow panels** (0.2.3): the help cards' title (unverified, offline) goes
+  under its icon when it cannot keep 12em beside it -- at 320px a German title
+  drew seven lines in a 153px column, now four at full width. Under a 480px
+  panel the key field uses 15px untracked type: a 30-character key ran 121px
+  past the field at 320px, now 45px (a 19-character key fitted before and
+  after).
 - **Upgrading from 0.2.1:** between a 783 and ~1200px viewport the first-run
   view is now stacked (it was two columns with a 51-168px key field). Consumer
   CSS that set `.mhmprokit-lic-main` inside a 783px media query should move to
