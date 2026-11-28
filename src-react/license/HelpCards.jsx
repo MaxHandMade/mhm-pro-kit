@@ -74,7 +74,8 @@ export function OfflineCard( { t, format, license, busy, onCheck } ) {
 				<h2 id={ titleId }>{ t( 'offlineTitle' ) }</h2>
 			</div>
 			<p>
-				{ left === null
+				{ /* No usable count (null, NaN, undefined from a consumer format) or grace is over: "stays on for 0 more days" would be false. */ }
+				{ ! ( left > 0 )
 					? t( 'offlineLong' )
 					: t( 'offlineStays', left ) }
 			</p>

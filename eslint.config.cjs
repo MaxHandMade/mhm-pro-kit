@@ -44,10 +44,12 @@ module.exports = [
 	{
 		// Jest reads its per-file environment from a docblock pragma
 		// (@jest-environment node), which the JSDoc rule takes for an unknown
-		// tag. The visual harness and the SCSS hover and rhythm tests need node.
+		// tag. The visual harness and the SCSS hover, rhythm and main-layout
+		// tests need node.
 		files: [
 			'tests/visual/**',
 			'tests/scss-hover.test.js',
+			'tests/scss-main-layout.test.js',
 			'tests/scss-rhythm.test.js',
 		],
 		rules: { 'jsdoc/check-tag-names': 'off' },
