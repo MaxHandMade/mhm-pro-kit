@@ -659,3 +659,85 @@ test.each(
 	}
 	expect( container.textContent ).not.toContain( 'Your WP Alemi account' );
 } );
+
+// ---- 0.2.3 (break-ui 3-9, Rentiva Pro text, worst data) -----------------------------------------------------
+
+// B: on the last day "0 days left" reads as a count, not as today. An optional
+// `expiresTodayPill` replaces the pill at 0 days; without it the old pill stays.
+test( 'zero_days_uses_expires_today_pill_when_given', () => {
+	panel(
+		{ ...ACTIVE, state: 'expiring', days_left: 0 },
+		{ text: { ...TEXT, expiresTodayPill: 'Ends today' } }
+	);
+	expect( screen.getByText( 'Ends today' ) ).not.toBeNull();
+	expect( screen.queryByText( '0 days left' ) ).toBeNull();
+} );
+
+test( 'zero_days_without_the_key_keeps_the_count_pill', () => {
+	panel( { ...ACTIVE, state: 'expiring', days_left: 0 } );
+	expect( screen.getByText( '0 days left' ) ).not.toBeNull();
+} );
+
+test( 'one_day_never_uses_the_today_pill', () => {
+	panel(
+		{ ...ACTIVE, state: 'expiring', days_left: 1 },
+		{ text: { ...TEXT, expiresTodayPill: 'Ends today' } }
+	);
+	expect( screen.queryByText( 'Ends today' ) ).toBeNull();
+	expect( screen.getByText( '1 days left' ) ).not.toBeNull();
+} );
+
+// C: data a REST body can lack must not print a broken sentence or an empty row.
+test( 'new_version_strip_without_installed_version_drops_the_you_have_sentence', () => {
+	const { container } = panel( {
+		...ACTIVE,
+		latest_version: '1.1.0',
+		current_version: '',
+	} );
+	expect( container.textContent ).not.toMatch( /You have \./ );
+	expect( screen.getByText( 'Slotiva 1.1.0 is out.' ) ).not.toBeNull();
+} );
+
+test.each( [ 'active', 'expiring' ] )(
+	'%s_card_without_a_key_has_no_empty_key_row',
+	( state ) => {
+		const { container } = panel( {
+			...ACTIVE,
+			state,
+			days_left: state === 'expiring' ? 9 : 200,
+			key_masked: '',
+		} );
+		const labels = [ ...container.querySelectorAll( 'dt' ) ].map(
+			( dt ) => dt.textContent
+		);
+		expect( labels ).not.toContain( 'Key' );
+	}
+);
+
+test( 'expiring_without_an_end_date_has_no_ends_on_sentence', () => {
+	const { container } = panel( {
+		...ACTIVE,
+		state: 'expiring',
+		days_left: 9,
+		expires_at: null,
+	} );
+	expect( container.textContent ).not.toMatch( /Ends on \./ );
+} );
+
+test( 'expired_split_drops_an_item_whose_product_text_is_empty', () => {
+	const { container } = panel(
+		{ ...ACTIVE, state: 'expired', reason: 'expired', days_left: 0 },
+		{ product: { ...PRODUCT, stillWorking: '', paused: 'Updates.' } }
+	);
+	const items = container.querySelectorAll( '.mhmprokit-lic-split__item' );
+	expect( items ).toHaveLength( 1 );
+	expect( items[ 0 ].textContent ).toContain( 'Updates.' );
+} );
+
+test( 'expired_split_is_gone_when_both_product_texts_are_empty', () => {
+	const { container } = panel(
+		{ ...ACTIVE, state: 'expired', reason: 'expired', days_left: 0 },
+		{ product: { ...PRODUCT, stillWorking: '', paused: '' } }
+	);
+	expect( container.querySelector( '.mhmprokit-lic-split' ) ).toBeNull();
+} );

@@ -108,8 +108,16 @@ export function Latest( { t, license, product } ) {
 			<div className="mhmprokit-lic-latest__text">
 				<strong>
 					{ t( 'latestTitle', product.name, license.latest_version ) }
-				</strong>{ ' ' }
-				<span>{ t( 'latestText', license.current_version ) }</span>
+				</strong>
+				{ /* No installed version: "You have ." would be a broken sentence (0.2.3). */ }
+				{ license.current_version ? (
+					<>
+						{ ' ' }
+						<span>
+							{ t( 'latestText', license.current_version ) }
+						</span>
+					</>
+				) : null }
 			</div>
 			<LinkButton
 				href={ product.downloadUrl }
@@ -157,9 +165,11 @@ function ActiveCard( { t, format, license, product, busy, onCheck } ) {
 			</div>
 			<Features t={ t } items={ product.features } />
 			<dl className="mhmprokit-lic-facts">
-				<Fact label={ t( 'keyFact' ) }>
-					<code>{ license.key_masked }</code>
-				</Fact>
+				{ license.key_masked ? (
+					<Fact label={ t( 'keyFact' ) }>
+						<code>{ license.key_masked }</code>
+					</Fact>
+				) : null }
 				<Fact label={ t( 'lastCheckFact' ) }>
 					<LastCheck
 						format={ format }
@@ -196,6 +206,11 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 	const titleId = useId();
 	const days = license.days_left || 0;
 	const urgent = days <= URGENT_DAYS;
+	// On the last day "0 days left" reads as a count; an optional key says "today" (0.2.3).
+	const pill =
+		days === 0 && t( 'expiresTodayPill' )
+			? t( 'expiresTodayPill' )
+			: t( 'expiringPill', days );
 	return (
 		<section
 			className={ `mhmprokit-lic-card mhmprokit-lic-status mhmprokit-lic-status--warn${
@@ -218,15 +233,17 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 									urgent ? 'bad' : 'warn'
 								}` }
 							>
-								{ t( 'expiringPill', days ) }
+								{ pill }
 							</span>
 						</div>
-						<p>
-							{ t(
-								'expiringText',
-								format.date( license.expires_at )
-							) }
-						</p>
+						{ license.expires_at ? (
+							<p>
+								{ t(
+									'expiringText',
+									format.date( license.expires_at )
+								) }
+							</p>
+						) : null }
 						<div className="mhmprokit-lic-actions">
 							<LinkButton
 								href={ product.accountUrl }
@@ -261,9 +278,11 @@ function ExpiringCard( { t, format, license, product, busy, onCheck } ) {
 			</div>
 			<Features t={ t } items={ product.features } />
 			<dl className="mhmprokit-lic-facts">
-				<Fact label={ t( 'keyFact' ) }>
-					<code>{ license.key_masked }</code>
-				</Fact>
+				{ license.key_masked ? (
+					<Fact label={ t( 'keyFact' ) }>
+						<code>{ license.key_masked }</code>
+					</Fact>
+				) : null }
 				<Fact label={ t( 'lastCheckFact' ) }>
 					<LastCheck
 						format={ format }
@@ -330,22 +349,29 @@ function ExpiredCard( { t, format, license, product, busy, onCheck, form } ) {
 						/>
 					</div>
 				</div>
-				<div className="mhmprokit-lic-split">
-					<div className="mhmprokit-lic-split__item mhmprokit-lic-split__item--ok">
-						<Icon name="check" size={ 20 } />
-						<div>
-							<strong>{ t( 'stillWorking' ) }</strong>
-							<span>{ product.stillWorking }</span>
-						</div>
+				{ /* A product text left empty drops its item; both drop the split (0.2.3). */ }
+				{ product.stillWorking || product.paused ? (
+					<div className="mhmprokit-lic-split">
+						{ product.stillWorking ? (
+							<div className="mhmprokit-lic-split__item mhmprokit-lic-split__item--ok">
+								<Icon name="check" size={ 20 } />
+								<div>
+									<strong>{ t( 'stillWorking' ) }</strong>
+									<span>{ product.stillWorking }</span>
+								</div>
+							</div>
+						) : null }
+						{ product.paused ? (
+							<div className="mhmprokit-lic-split__item">
+								<Icon name="pause" size={ 20 } />
+								<div>
+									<strong>{ t( 'paused' ) }</strong>
+									<span>{ product.paused }</span>
+								</div>
+							</div>
+						) : null }
 					</div>
-					<div className="mhmprokit-lic-split__item">
-						<Icon name="pause" size={ 20 } />
-						<div>
-							<strong>{ t( 'paused' ) }</strong>
-							<span>{ product.paused }</span>
-						</div>
-					</div>
-				</div>
+				) : null }
 			</section>
 			<section
 				className="mhmprokit-lic-card mhmprokit-lic-other"
