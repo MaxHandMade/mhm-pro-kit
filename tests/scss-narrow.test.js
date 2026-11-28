@@ -56,9 +56,9 @@ test( 'a narrow panel draws the key field in a tighter type', () => {
  * whose selector targets a text field (input that is not a checkbox, radio,
  * range, button-like or hidden; textarea; select) is read.
  */
-const TEXT_FIELD =
-	/(^|[\s>+~(,])(input|textarea|select)(?=$|[\s.:#[>+~),])/;
-const NOT_TEXT = /type=["']?(checkbox|radio|range|submit|button|reset|color|file|hidden|image)/;
+const TEXT_FIELD = /(^|[\s>+~(,])(input|textarea|select)(?=$|[\s.:#[>+~),])/;
+const NOT_TEXT =
+	/type=["']?(checkbox|radio|range|submit|button|reset|color|file|hidden|image)/;
 
 test( 'no rule gives a text field a font-size under 16px', () => {
 	const offenders = [];
@@ -74,7 +74,9 @@ test( 'no rule gives a text field a font-size under 16px', () => {
 		const px = /^(\d+(?:\.\d+)?)px$/.exec( size.trim() );
 		// A non-px size (em, rem, %, var()) cannot be checked here: flag it.
 		if ( ! px || parseFloat( px[ 1 ] ) < 16 ) {
-			offenders.push( `${ selectors.join( ', ' ) } { font-size: ${ size } }` );
+			offenders.push(
+				`${ selectors.join( ', ' ) } { font-size: ${ size } }`
+			);
 		}
 	}
 	expect( offenders ).toEqual( [] );
